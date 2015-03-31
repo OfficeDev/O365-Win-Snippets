@@ -1,0 +1,17 @@
+User:
+
+Error	1	The type 'Microsoft.OData.ProxyExtensions.IEntityBase' is defined in an assembly that is not referenced. You must add a reference to assembly 'Microsoft.OData.ProxyExtensions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null'.	C:\Users\jamescro\Documents\Visual Studio 2013\Projects\GraphAPIDemo\GraphAPIDemo\MainPage.xaml.cs	117	21	GraphAPIDemo
+Error	2	The type 'Microsoft.OData.ProxyExtensions.EntityBase' is defined in an assembly that is not referenced. You must add a reference to assembly 'Microsoft.OData.ProxyExtensions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null'.	C:\Users\jamescro\Documents\Visual Studio 2013\Projects\GraphAPIDemo\GraphAPIDemo\MainPage.xaml.cs	119	21	GraphAPIDemo
+
+
+
+Files
+
+
+Error	3	The type 'Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSetBase`1<T0>' is defined in an assembly that is not referenced. You must add a reference to assembly 'Microsoft.OData.ProxyExtensions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null'.	C:\Users\jamescro\Documents\Visual Studio 2013\Projects\GraphAPIDemo\GraphAPIDemo\MainPage.xaml.cs	142	21	GraphAPIDemo
+Error	2	The type 'Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSetBase' is defined in an assembly that is not referenced. You must add a reference to assembly 'Microsoft.OData.ProxyExtensions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null'.	C:\Users\jamescro\Documents\Visual Studio 2013\Projects\GraphAPIDemo\GraphAPIDemo\MainPage.xaml.cs	142	21	GraphAPIDemo
+Error	1	The type 'Microsoft.OData.ProxyExtensions.IEntityBase' is defined in an assembly that is not referenced. You must add a reference to assembly 'Microsoft.OData.ProxyExtensions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null'.	C:\Users\jamescro\Documents\Visual Studio 2013\Projects\GraphAPIDemo\GraphAPIDemo\MainPage.xaml.cs	141	21	GraphAPIDemo
+Error	4	'Microsoft.Graph.IItemCollection' does not contain a definition for 'Take' and no extension method 'Take' accepting a first argument of type 'Microsoft.Graph.IItemCollection' could be found (are you missing a using directive or an assembly reference?)	C:\Users\jamescro\Documents\Visual Studio 2013\Projects\GraphAPIDemo\GraphAPIDemo\MainPage.xaml.cs	142	45	GraphAPIDemo
+
+
+
