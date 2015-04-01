@@ -225,7 +225,7 @@ namespace O365_Win_Snippets
                 // Copy the new file into the new folder.
                 var copiedFileId = await FilesOperations.CopyFileAsync(createdFileId, folder.Id);
 
-                // Clean up
+                // Clean up.
                 // Comment out if you want to see the file, the folder, and the copied file.
                 await FilesOperations.DeleteFileAsync(createdFileId);
                 await FilesOperations.DeleteFolderAsync(folder.Id);
