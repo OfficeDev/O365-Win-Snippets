@@ -136,6 +136,28 @@ namespace O365_Win_Snippets
             catch { return null; }
         }
 
+        public static async Task<IMessage> GetMessagesAsync(string subject, DateTimeOffset after)
+        {
+
+            try
+            {
+                // Make sure we have a reference to the Exchange client
+                var outlookClient = await GetOutlookClientAsync();
+
+                //Get messages (from Inbox by default).
+                // Note: This query is not guaranteed to return 0 or 1 message, so 
+                // I need to use ExecuteAsync. Otherwise, ExecuteSingleAsync will throw
+                // InvalidOperationException.
+                var result = await outlookClient.Me.Messages
+                            .Where(m => m.Subject == subject && m.DateTimeReceived > after)
+                            .ExecuteAsync();
+
+
+                return (result.CurrentPage.Count > 0) ? result.CurrentPage[0] : null;
+            }
+            catch { return null; }
+        }
+
         public static async Task<bool> SendMessageAsync(
             string Subject,
             string Body,
