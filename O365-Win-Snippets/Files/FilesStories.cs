@@ -205,5 +205,37 @@ namespace O365_Win_Snippets
 
         }
 
+        public static async Task<bool> TryCopyFileAsync()
+        {
+            try
+            {
+                // Grab the root folder.
+                var items = await FilesOperations.GetFolderChildrenAsync("root");
+                if (items == null)
+                    return false;
+
+                // Create a new file.
+                var createdFileId = await FilesOperations.CreateFileAsync(STORY_DATA_IDENTIFIER + "_" + Guid.NewGuid().ToString(), new MemoryStream(Encoding.UTF8.GetBytes("TryAddFileAsync")));
+                if (createdFileId == null)
+                    return false;
+
+                // Create a new folder in the root folder.
+                var folder = await FilesOperations.CreateFolderAsync(STORY_DATA_IDENTIFIER, "root");
+
+                // Copy the new file into the new folder.
+                var copiedFileId = await FilesOperations.CopyFileAsync(createdFileId, folder.Id);
+
+                // Clean up
+                // Comment out if you want to see the file, the folder, and the copied file.
+                await FilesOperations.DeleteFileAsync(createdFileId);
+                await FilesOperations.DeleteFolderAsync(folder.Id);
+                await FilesOperations.DeleteFileAsync(copiedFileId);
+
+                return true;
+            }
+
+            catch { return false; }
+        }
+
     }
 }

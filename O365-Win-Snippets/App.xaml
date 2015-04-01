@@ -4,7 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:O365_Win_Snippets">
     <Application.Resources>
-
+        <x:String x:Key="ida:ClientID">bc76c452-2df3-4b38-b079-6c64a7a98de8</x:String>
+    <x:String x:Key="ida:AuthorizationUri">https://login.windows.net</x:String>
     </Application.Resources>
 
 </Application>

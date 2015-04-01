@@ -101,10 +101,10 @@ namespace O365_Win_Snippets
             StoryCollection.Add(new StoryDefinition() { GroupName = "Files", Title = "Update content", RunStoryAsync = FilesStories.TryUpdateFileContentAsync });
             StoryCollection.Add(new StoryDefinition() { GroupName = "Files", Title = "Delete file", RunStoryAsync = FilesStories.TryDeleteFileAsync });
             StoryCollection.Add(new StoryDefinition() { GroupName = "Files", Title = "Download", RunStoryAsync = FilesStories.TryDownloadFileAsync });
+            StoryCollection.Add(new StoryDefinition() { GroupName = "Files", Title = "Copy file", RunStoryAsync = FilesStories.TryCopyFileAsync });
 
             //////StoryCollection.Add(new StoryDefinition() { GroupName = "Files", Title = "Rename file", RunStoryAsync = FilesStories.TryUpdateFileAsync });
             //////StoryCollection.Add(new StoryDefinition() { GroupName = "Files", Title = "Rename folder", RunStoryAsync = FilesStories.TryUpdateFolderAsync });
-            //////StoryCollection.Add(new StoryDefinition() { GroupName = "Files", Title = "Copy file", RunStoryAsync = FilesStories.TryCopyFileAsync });
 
 
             this.DataContext = StoryCollection;
