@@ -14,6 +14,7 @@ namespace O365_Win_Snippets
     class EmailStories
     {
         private static readonly string STORY_DATA_IDENTIFIER = Guid.NewGuid().ToString();
+        private static readonly string DEFAULT_MESSAGE_BODY = "This message was sent from the <a href='https://github.com/OfficeDev/O365-Win-Snippets' >Office 365 Windows Snippets project</a>";
 
         public static async Task<bool> TryGetOutlookClientAsync()
         {
@@ -42,7 +43,7 @@ namespace O365_Win_Snippets
 
                  bool isSent= await EmailOperations.SendMessageAsync(
                     STORY_DATA_IDENTIFIER,
-                    "This message was sent from the <a href='https://github.com/OfficeDev/O365-Win-Snippets' >Office 365 Windows Snippets project</a>",
+                    DEFAULT_MESSAGE_BODY,
                     AuthenticationHelper.LoggedInUserEmail
                     );
 
@@ -62,7 +63,7 @@ namespace O365_Win_Snippets
                 // Create the draft message.
                 var newMessageId = await EmailOperations.CreateDraftAsync(
                         STORY_DATA_IDENTIFIER,
-                        "This message was sent from the <a href='https://github.com/OfficeDev/O365-Win-Snippets' >Office 365 Windows Snippets project</a>",
+                        DEFAULT_MESSAGE_BODY,
                         AuthenticationHelper.LoggedInUserEmail
                     );
 
@@ -89,33 +90,24 @@ namespace O365_Win_Snippets
 
                 var newMessageId = await EmailOperations.CreateDraftAndSendAsync(
                         STORY_DATA_IDENTIFIER,
-                        "This message was sent from the <a href='https://github.com/OfficeDev/O365-Win-Snippets' >Office 365 Windows Snippets project</a>",
+                        DEFAULT_MESSAGE_BODY,
                         AuthenticationHelper.LoggedInUserEmail
                     );
 
                 if (newMessageId == null)
                     return false;
 
-                // Check the inbox until the sent message appears. You might need to increase the number of attempts
-                // if it is taking especially long for the message to appear in the Inbox.
-                for (int i = 0; i < 10; i++)
-                {
-                    var messages = await EmailOperations.GetMessagesAsync();
+                // Find the sent message.
+                var sentMessageId = await GetSentMessageIdAsync();
+                if (String.IsNullOrEmpty(sentMessageId))
+                    return false;
 
-                    foreach (IMessage message in messages)
-                    {
-                        if (message.Subject == STORY_DATA_IDENTIFIER)
-                        {
-                            // Reply to the message.
-                            bool isReplied = await EmailOperations.ReplyMessageAsync(
-                                message.Id,
-                                "This reply was sent from the <a href='https://github.com/OfficeDev/O365-Win-Snippets' >Office 365 Windows Snippets project</a>");
-                            return isReplied;
-                        }
-                    }
-                }
+                // Reply to the message.
+                bool isReplied = await EmailOperations.ReplyMessageAsync(
+                    sentMessageId,
+                    DEFAULT_MESSAGE_BODY);
 
-                return false;
+                return isReplied;
 
             }
             catch { return false; }
@@ -131,33 +123,25 @@ namespace O365_Win_Snippets
 
                 var newMessageId = await EmailOperations.CreateDraftAndSendAsync(
                         STORY_DATA_IDENTIFIER,
-                        "This message was sent from the <a href='https://github.com/OfficeDev/O365-Win-Snippets' >Office 365 Windows Snippets project</a>",
+                        DEFAULT_MESSAGE_BODY,
                         AuthenticationHelper.LoggedInUserEmail
                     );
 
                 if (newMessageId == null)
                     return false;
 
-                // Check the inbox until the sent message appears. You might need to increase the number of attempts
-                // if it is taking especially long for the message to appear in the Inbox.
-                for (int i = 0; i < 10; i++)
-                {
-                    var messages = await EmailOperations.GetMessagesAsync();
 
-                    foreach (IMessage message in messages)
-                    {
-                        if (message.Subject == STORY_DATA_IDENTIFIER)
-                        {
-                            // Reply to the message.
-                            bool isReplied = await EmailOperations.ReplyAllAsync(
-                                message.Id,
-                                "This reply all was sent from the <a href='https://github.com/OfficeDev/O365-Win-Snippets' >Office 365 Windows Snippets project</a>");
-                            return isReplied;
-                        }
-                    }
-                }
+                // Find the sent message.
+                var sentMessageId = await GetSentMessageIdAsync();
+                if (String.IsNullOrEmpty(sentMessageId))
+                    return false;
 
-                return false;
+                // Reply to the message.
+                bool isReplied = await EmailOperations.ReplyAllAsync(
+                                sentMessageId,
+                                DEFAULT_MESSAGE_BODY);
+
+                return isReplied;
 
             }
             catch { return false; }
@@ -173,34 +157,25 @@ namespace O365_Win_Snippets
 
                 var newMessageId = await EmailOperations.CreateDraftAndSendAsync(
                         STORY_DATA_IDENTIFIER,
-                        "This message was sent from the <a href='https://github.com/OfficeDev/O365-Win-Snippets' >Office 365 Windows Snippets project</a>",
+                        DEFAULT_MESSAGE_BODY,
                         AuthenticationHelper.LoggedInUserEmail
                     );
 
                 if (newMessageId == null)
                     return false;
 
-                // Check the inbox until the sent message appears. You might need to increase the number of attempts
-                // if it is taking especially long for the message to appear in the Inbox.
-                for (int i = 0; i < 10; i++)
-                {
-                    var messages = await EmailOperations.GetMessagesAsync();
+                // Find the sent message.
+                var sentMessageId = await GetSentMessageIdAsync();
+                if (String.IsNullOrEmpty(sentMessageId))
+                    return false;
 
-                    foreach (IMessage message in messages)
-                    {
-                        if (message.Subject == STORY_DATA_IDENTIFIER)
-                        {
-                            // Reply to the message.
-                            bool isReplied = await EmailOperations.ForwardMessageAsync(
-                                message.Id,
-                                "This forward was sent from the <a href='https://github.com/OfficeDev/O365-Win-Snippets' >Office 365 Windows Snippets project</a>",
-                                AuthenticationHelper.LoggedInUserEmail);
-                            return isReplied;
-                        }
-                    }
-                }
+                // Reply to the message.
+                bool isReplied = await EmailOperations.ForwardMessageAsync(
+                               sentMessageId,
+                               DEFAULT_MESSAGE_BODY,
+                               AuthenticationHelper.LoggedInUserEmail);
 
-                return false;
+                return isReplied;
 
             }
             catch { return false; }
@@ -214,7 +189,7 @@ namespace O365_Win_Snippets
                 // Create a draft message. If you send the message without first creating a draft, you can't easily retrieve the message Id.
                 var newMessageId = await EmailOperations.CreateDraftAsync(
                         STORY_DATA_IDENTIFIER,
-                        "This message was sent from the <a href='https://github.com/OfficeDev/O365-Win-Snippets' >Office 365 Windows Snippets project</a>",
+                        DEFAULT_MESSAGE_BODY,
                         AuthenticationHelper.LoggedInUserEmail
                     );
 
@@ -224,7 +199,7 @@ namespace O365_Win_Snippets
                 // Update the message.
                 bool isUpdated = await EmailOperations.UpdateMessageAsync(
                     newMessageId,
-                    "This message was updated by the <a href='https://github.com/OfficeDev/O365-Win-Snippets' >Office 365 Windows Snippets project</a>");
+                    DEFAULT_MESSAGE_BODY);
 
                 //Cleanup. Comment if you want to verify the update in your Drafts folder.
                 await EmailOperations.DeleteMessageAsync(newMessageId);
@@ -244,34 +219,25 @@ namespace O365_Win_Snippets
 
                 var newMessageId = await EmailOperations.CreateDraftAndSendAsync(
                         STORY_DATA_IDENTIFIER,
-                        "This message was sent from the <a href='https://github.com/OfficeDev/O365-Win-Snippets' >Office 365 Windows Snippets project</a>",
+                        DEFAULT_MESSAGE_BODY,
                         AuthenticationHelper.LoggedInUserEmail
                     );
 
                 if (newMessageId == null)
                     return false;
 
-                // Check the inbox until the sent message appears. You might need to increase the number of attempts
-                // if it is taking especially long for the message to appear in the Inbox.
-                for (int i = 0; i < 10; i++)
-                {
-                    var messages = await EmailOperations.GetMessagesAsync();
+                // Find the sent message.
+                var sentMessageId = await GetSentMessageIdAsync();
+                if (String.IsNullOrEmpty(sentMessageId))
+                    return false;
 
-                    foreach (IMessage message in messages)
-                    {
-                        if (message.Subject == STORY_DATA_IDENTIFIER)
-                        {
-                            // Reply to the message.
-                            bool isReplied = await EmailOperations.MoveMessageAsync(
-                                message.Id,
+                // Reply to the message.
+                bool isReplied = await EmailOperations.MoveMessageAsync(
+                                sentMessageId,
                                 "Inbox",
                                 "Drafts");
-                            return isReplied;
-                        }
-                    }
-                }
 
-                return false;
+                return isReplied;
 
             }
             catch { return false; }
@@ -287,34 +253,24 @@ namespace O365_Win_Snippets
 
                 var newMessageId = await EmailOperations.CreateDraftAndSendAsync(
                         STORY_DATA_IDENTIFIER,
-                        "This message was sent from the <a href='https://github.com/OfficeDev/O365-Win-Snippets' >Office 365 Windows Snippets project</a>",
+                        DEFAULT_MESSAGE_BODY,
                         AuthenticationHelper.LoggedInUserEmail
                     );
 
                 if (newMessageId == null)
                     return false;
+                // Find the sent message.
+                var sentMessageId = await GetSentMessageIdAsync();
+                if (String.IsNullOrEmpty(sentMessageId))
+                    return false;
 
-                // Check the inbox until the sent message appears. You might need to increase the number of attempts
-                // if it is taking especially long for the message to appear in the Inbox.
-                for (int i = 0; i < 10; i++)
-                {
-                    var messages = await EmailOperations.GetMessagesAsync();
-
-                    foreach (IMessage message in messages)
-                    {
-                        if (message.Subject == STORY_DATA_IDENTIFIER)
-                        {
-                            // Reply to the message.
-                            bool isReplied = await EmailOperations.CopyMessageAsync(
-                                message.Id,
+                // Reply to the message.
+                bool isReplied = await EmailOperations.CopyMessageAsync(
+                                sentMessageId,
                                 "Inbox",
                                 "Drafts");
-                            return isReplied;
-                        }
-                    }
-                }
 
-                return false;
+                return isReplied;
 
             }
             catch { return false; }
@@ -328,7 +284,7 @@ namespace O365_Win_Snippets
                 // Create a draft message. If you send the message without first creating a draft, you can't easily retrieve the message Id.
                 var newMessageId = await EmailOperations.CreateDraftAsync(
                         STORY_DATA_IDENTIFIER,
-                        "This message was sent from the <a href='https://github.com/OfficeDev/O365-Win-Snippets' >Office 365 Windows Snippets project</a>",
+                        DEFAULT_MESSAGE_BODY,
                         AuthenticationHelper.LoggedInUserEmail
                     );
 
@@ -473,6 +429,26 @@ namespace O365_Win_Snippets
                 return isFolderDeleted;
             }
             catch { return false; }
+        }
+
+        private static async Task<string> GetSentMessageIdAsync()
+        {
+            // Search for a maximum of 10 times
+            for (int i = 0; i < 10; i++)
+            {
+                var message = await EmailOperations.GetMessagesAsync(STORY_DATA_IDENTIFIER
+                                              , DateTimeOffset.Now.Subtract(new TimeSpan(0, 1, 0)));
+                if (message != null)
+                    return message.Id;
+
+                // Delay before trying again. Increase this value if you connection to the server
+                // is slow and causes false results. 
+                await Task.Delay(200);
+
+            }
+
+            // Couldn't find the sent message
+            return string.Empty;
         }
 
     }
