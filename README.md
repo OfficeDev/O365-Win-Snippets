@@ -35,7 +35,7 @@ You can register each app with the Office 365 API Tools for Visual Studio. Be su
 	
 
 The dialog will look like this:
-![](/Readme-images/ConnectedServices.png "Windows Phone interface for the O365-WinPlatform-Connect sample")
+![](/Readme-images/ConnectedServices.PNG "Windows Phone interface for the O365-WinPlatform-Connect sample")
    7. After you click **OK** in the Services Manager dialog box, assemblies for connecting to Office 365 APIs will be added to your project.
 
 ## Build and debug ##
