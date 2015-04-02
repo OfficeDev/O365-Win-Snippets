@@ -168,6 +168,42 @@ namespace O365_Win_Snippets
             catch { return false; }
         }
 
+        public static async Task<string> CopyFileAsync(string fileId, string destinationFolderId)
+        {
+            try
+            {
+                var sharePointClient = await GetSharePointClientAsync();
+
+                var copiedFile = await sharePointClient.Files.GetById(fileId).ToFile().CopyAsync(destinationFolderId, null, null);
+
+                Debug.WriteLine("Copied file to folder.");
+
+                return copiedFile.Id;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public static async Task<string> RenameFileAsync(string fileId, string newName)
+        {
+
+            try
+            {
+                var sharePointClient = await GetSharePointClientAsync();
+
+                var file = await sharePointClient.Files.GetById(fileId).ToFile().ExecuteAsync();
+
+                file.Name = newName;
+                await file.UpdateAsync();
+
+                Debug.WriteLine("Renamed a file: " + fileId);
+
+                return file.Name;
+            }
+            catch { return null; }
+        }
 
         //Folders operations
         public static async Task<List<IItem>> GetFolderChildrenAsync(string folderId)
@@ -218,24 +254,6 @@ namespace O365_Win_Snippets
 
             }
             catch { return false; }
-        }
-
-        public static async Task<string> CopyFileAsync(string fileId, string destinationFolderId)
-        {
-            try
-            {
-                var sharePointClient = await GetSharePointClientAsync();
-
-                var copiedFile = await sharePointClient.Files.GetById(fileId).ToFile().CopyAsync(destinationFolderId, null, null);
-
-                Debug.WriteLine("Copied file to folder.");
-
-                return copiedFile.Id;
-            }
-            catch
-            {
-                return null; 
-            }
         }
 
     }
