@@ -8,7 +8,7 @@ namespace O365_Win_Snippets
 {
     public class CalendarStories
     {
-        private static readonly string TEST_DATA_IDENTIFIER = Guid.NewGuid().ToString();
+        private static readonly string STORY_DATA_IDENTIFIER = Guid.NewGuid().ToString();
 
         public static async Task<bool> TryGetOutlookClientAsync()
         {
@@ -40,7 +40,7 @@ namespace O365_Win_Snippets
         {
             var newEventId = await CalendarOperations.AddCalendarEventWithArgsAsync(
                             Guid.NewGuid().ToString(),
-                            TEST_DATA_IDENTIFIER,
+                            STORY_DATA_IDENTIFIER,
                             string.Empty,
                             Guid.NewGuid().ToString(),
                             new DateTimeOffset(DateTime.Now),
@@ -63,7 +63,7 @@ namespace O365_Win_Snippets
 
             var newEventId = await CalendarOperations.AddCalendarEventWithArgsAsync(
                             "OrigLocationValue",
-                            TEST_DATA_IDENTIFIER,
+                            STORY_DATA_IDENTIFIER,
                             string.Empty,
                             Guid.NewGuid().ToString(),
                             new DateTimeOffset(DateTime.Now),
@@ -78,7 +78,7 @@ namespace O365_Win_Snippets
             // Update our event
             var updatedEvent = await CalendarOperations.UpdateCalendarEventAsync(newEventId,
                            "NewLocationValue",
-                           TEST_DATA_IDENTIFIER,
+                           STORY_DATA_IDENTIFIER,
                            string.Empty,
                            Guid.NewGuid().ToString(),
                            new DateTimeOffset(DateTime.Now),

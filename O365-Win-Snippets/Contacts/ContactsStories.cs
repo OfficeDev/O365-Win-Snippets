@@ -8,7 +8,7 @@ namespace O365_Win_Snippets
 {
     public class ContactsStories
     {
-        private static readonly string TEST_DATA_IDENTIFIER = Guid.NewGuid().ToString();
+        private static readonly string STORY_DATA_IDENTIFIER = Guid.NewGuid().ToString();
 
         public static async Task<bool> TryGetOutlookClientAsync()
         {
@@ -28,7 +28,7 @@ namespace O365_Win_Snippets
             var newContact = await ContactsOperations.AddContactItemAsync(
                 Guid.NewGuid().ToString(),
                 Guid.NewGuid().ToString(),
-                TEST_DATA_IDENTIFIER,
+                STORY_DATA_IDENTIFIER,
                 Guid.NewGuid().ToString(),
                 "a@b.com",
                 Guid.NewGuid().ToString(),
@@ -48,7 +48,7 @@ namespace O365_Win_Snippets
             var newContact = await ContactsOperations.AddContactItemAsync(
                 Guid.NewGuid().ToString(),
                 Guid.NewGuid().ToString(),
-                TEST_DATA_IDENTIFIER,
+                STORY_DATA_IDENTIFIER,
                 Guid.NewGuid().ToString(),
                 "a@b.com",
                 Guid.NewGuid().ToString(),
@@ -66,7 +66,7 @@ namespace O365_Win_Snippets
             var testContact = await ContactsOperations.AddContactItemAsync(
                 "FileAsValue",
                 "FirstNameValue",
-                TEST_DATA_IDENTIFIER,
+                STORY_DATA_IDENTIFIER,
                 "JobTitleValue",
                 "a@b.com",
                 "WorkPhoneValue",
@@ -82,7 +82,7 @@ namespace O365_Win_Snippets
                  testContact.Id,
                  "NewFileAsValue",
                 "FirstNameValue",
-                TEST_DATA_IDENTIFIER,
+                STORY_DATA_IDENTIFIER,
                 "NewJobTitleValue",
                 "a@b.com",
                 "WorkPhoneValue",
@@ -107,7 +107,7 @@ namespace O365_Win_Snippets
             var newContact = await ContactsOperations.AddContactItemAsync(
                 Guid.NewGuid().ToString(),
                 Guid.NewGuid().ToString(),
-                TEST_DATA_IDENTIFIER,
+                STORY_DATA_IDENTIFIER,
                 Guid.NewGuid().ToString(),
                 "a@b.com",
                 Guid.NewGuid().ToString(),
