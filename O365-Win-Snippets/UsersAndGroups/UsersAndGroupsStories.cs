@@ -10,27 +10,27 @@ namespace O365_Win_Snippets
     {
         public static async Task<bool> TryGetAadGraphClientAsync()
         {
-            var client = await UsersAndGroupsOperations.GetGraphClientAsync();
+            var client = await UsersAndGroupsSnippets.GetGraphClientAsync();
             return client != null;
         }
 
         public static async Task<bool> TryGetUsersAsync()
         {
-            var users = await UsersAndGroupsOperations.GetUsersAsync();
+            var users = await UsersAndGroupsSnippets.GetUsersAsync();
 
             return users != null;
         }
 
         public static async Task<bool> TryGetTenantAsync()
         {
-            var details = await UsersAndGroupsOperations.GetTenantDetailsAsync();
+            var details = await UsersAndGroupsSnippets.GetTenantDetailsAsync();
 
             return details != null;
         }
 
         public static async Task<bool> TryGetGroupsAsync()
         {
-            var groups = await UsersAndGroupsOperations.GetGroupsAsync();
+            var groups = await UsersAndGroupsSnippets.GetGroupsAsync();
 
             return groups != null;
         }

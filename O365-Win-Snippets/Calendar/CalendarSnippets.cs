@@ -9,9 +9,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+//Snippets in this file:
+//
+//GetOutlookClientAsync
+//GetCalendarEventsAsync
+//AddCalendarEventAsync
+//AddCalendarEventWithArgsAsync
+//UpdateCalendarEventAsync
+//DeleteCalendarEventAsync
+
 namespace O365_Win_Snippets
 {
-    public static class CalendarOperations
+    public static class CalendarSnippets
     {
         private static OutlookServicesClient _outlookClient = null;
 

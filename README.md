@@ -60,7 +60,7 @@ Run the solution and sign in with your organizational account to Office 365.
 
 If you have a snippet of your own and you would like to run it in this project, or even contribute it to this sample, follow these steps:
 
-1. Identify the operations file where your snippet belongs. For example, if it works with Calendars, choose the Calendar\CalendarOperations.cs file.
+1. Identify the operations file where your snippet belongs. For example, if it works with Calendars, choose the Calendar\CalendarSnippets.cs file. The project also includes ContactsSnippets.cs, EmailSnippets.cs, FilesSnippets.cs, and UsersAndGroupsSnippets.cs files.
 2. Add your snippet to the operations file. Be sure to include a try/catch block. The snippet below is an example of a simple snippet that gets one page of calendar events:
 
         public static async Task<List<IEvent>> GetCalendarEventsAsync()

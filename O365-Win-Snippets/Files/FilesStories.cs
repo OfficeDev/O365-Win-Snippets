@@ -14,7 +14,7 @@ namespace O365_Win_Snippets
 
         public static async Task<bool> TryGetSharePointClientAsync()
         {
-            var sharepointClient = await FilesOperations.GetSharePointClientAsync();
+            var sharepointClient = await FilesSnippets.GetSharePointClientAsync();
             return sharepointClient != null;
         }
 
@@ -23,19 +23,19 @@ namespace O365_Win_Snippets
         public static async Task<bool> TryCreateFileAsync()
         {
             // Grab a list of folder items
-            var items = await FilesOperations.GetFolderChildrenAsync("root");
+            var items = await FilesSnippets.GetFolderChildrenAsync("root");
             if (items == null)
                 return false;
 
             var origCount = items.Count;
 
-            var createdFileId = await FilesOperations.CreateFileAsync(STORY_DATA_IDENTIFIER + "_" + Guid.NewGuid().ToString(), new MemoryStream(Encoding.UTF8.GetBytes("TryAddFileAsync")));
+            var createdFileId = await FilesSnippets.CreateFileAsync(STORY_DATA_IDENTIFIER + "_" + Guid.NewGuid().ToString(), new MemoryStream(Encoding.UTF8.GetBytes("TryAddFileAsync")));
             if (createdFileId == null)
                 return false;
 
 
             // Grab the files again
-            items = await FilesOperations.GetFolderChildrenAsync("root");
+            items = await FilesSnippets.GetFolderChildrenAsync("root");
             if (items == null)
                 return false;
 
@@ -44,7 +44,7 @@ namespace O365_Win_Snippets
                 return false;
 
             //Cleanup
-            await FilesOperations.DeleteFileAsync(createdFileId);
+            await FilesSnippets.DeleteFileAsync(createdFileId);
 
 
             return true;
@@ -55,19 +55,19 @@ namespace O365_Win_Snippets
         {
             // Add a file & verify
             // Grab a list of files
-            var items = await FilesOperations.GetFolderChildrenAsync("root");
+            var items = await FilesSnippets.GetFolderChildrenAsync("root");
             if (items == null)
                 return false;
 
             var origCount = items.Count;
 
             // Create a file
-            var createdFileId = await FilesOperations.CreateFileAsync(STORY_DATA_IDENTIFIER + "_" + Guid.NewGuid().ToString(), new MemoryStream(Encoding.UTF8.GetBytes("TryUpdateFileAsync")));
+            var createdFileId = await FilesSnippets.CreateFileAsync(STORY_DATA_IDENTIFIER + "_" + Guid.NewGuid().ToString(), new MemoryStream(Encoding.UTF8.GetBytes("TryUpdateFileAsync")));
             if (createdFileId == null)
                 return false;
 
             // Grab the files again
-            items = await FilesOperations.GetFolderChildrenAsync("root");
+            items = await FilesSnippets.GetFolderChildrenAsync("root");
             if (items == null)
                 return false;
 
@@ -78,11 +78,11 @@ namespace O365_Win_Snippets
             // Update the content
 
             string updatedContent = "Updated content";
-            var updated = await FilesOperations.UpdateFileContentAsync(createdFileId, new MemoryStream(Encoding.UTF8.GetBytes(updatedContent)));
+            var updated = await FilesSnippets.UpdateFileContentAsync(createdFileId, new MemoryStream(Encoding.UTF8.GetBytes(updatedContent)));
 
             // Download the file and compare with the updated content.
 
-            using (var stream = await FilesOperations.DownloadFileAsync(createdFileId))
+            using (var stream = await FilesSnippets.DownloadFileAsync(createdFileId))
             {
                 if (stream == null)
                     return false;
@@ -94,7 +94,7 @@ namespace O365_Win_Snippets
             }
 
             //Cleanup
-            await FilesOperations.DeleteFileAsync(createdFileId);
+            await FilesSnippets.DeleteFileAsync(createdFileId);
 
             return updated;
 
@@ -107,12 +107,12 @@ namespace O365_Win_Snippets
             string fileContents = "TryDownloadFileAsync";
 
             // Create a file
-            var createdFile = await FilesOperations.CreateFileAsync(STORY_DATA_IDENTIFIER + "_" + Guid.NewGuid().ToString(), new MemoryStream(Encoding.UTF8.GetBytes(fileContents)));
+            var createdFile = await FilesSnippets.CreateFileAsync(STORY_DATA_IDENTIFIER + "_" + Guid.NewGuid().ToString(), new MemoryStream(Encoding.UTF8.GetBytes(fileContents)));
             if (createdFile == null)
                 return false;
 
             // Download the file
-            using (var stream = await FilesOperations.DownloadFileAsync(createdFile))
+            using (var stream = await FilesSnippets.DownloadFileAsync(createdFile))
             {
                 if (stream == null)
                     return false;
@@ -129,19 +129,19 @@ namespace O365_Win_Snippets
         public static async Task<bool> TryDeleteFileAsync()
         {
             // Grab a list of files
-            var items = await FilesOperations.GetFolderChildrenAsync("root");
+            var items = await FilesSnippets.GetFolderChildrenAsync("root");
             if (items == null)
                 return false;
 
             var origCount = items.Count;
 
             // Create a file
-            var createdFile = await FilesOperations.CreateFileAsync(STORY_DATA_IDENTIFIER + "_" + Guid.NewGuid().ToString(), new MemoryStream(Encoding.UTF8.GetBytes("CanAddFileAsync")));
+            var createdFile = await FilesSnippets.CreateFileAsync(STORY_DATA_IDENTIFIER + "_" + Guid.NewGuid().ToString(), new MemoryStream(Encoding.UTF8.GetBytes("CanAddFileAsync")));
             if (createdFile == null)
                 return false;
 
             // Grab the files again
-            items = await FilesOperations.GetFolderChildrenAsync("root");
+            items = await FilesSnippets.GetFolderChildrenAsync("root");
             if (items == null)
                 return false;
 
@@ -150,10 +150,10 @@ namespace O365_Win_Snippets
                 return false;
 
             // Delete our test file
-            await FilesOperations.DeleteFileAsync(createdFile);
+            await FilesSnippets.DeleteFileAsync(createdFile);
 
             //Grab the files again
-            items = await FilesOperations.GetFolderChildrenAsync("root");
+            items = await FilesSnippets.GetFolderChildrenAsync("root");
             if (items == null)
                 return false;
 
@@ -169,26 +169,26 @@ namespace O365_Win_Snippets
             try
             {
                 // Grab the root folder.
-                var items = await FilesOperations.GetFolderChildrenAsync("root");
+                var items = await FilesSnippets.GetFolderChildrenAsync("root");
                 if (items == null)
                     return false;
 
                 // Create a new file.
-                var createdFileId = await FilesOperations.CreateFileAsync(STORY_DATA_IDENTIFIER + "_" + Guid.NewGuid().ToString(), new MemoryStream(Encoding.UTF8.GetBytes("TryAddFileAsync")));
+                var createdFileId = await FilesSnippets.CreateFileAsync(STORY_DATA_IDENTIFIER + "_" + Guid.NewGuid().ToString(), new MemoryStream(Encoding.UTF8.GetBytes("TryAddFileAsync")));
                 if (createdFileId == null)
                     return false;
 
                 // Create a new folder in the root folder.
-                var folder = await FilesOperations.CreateFolderAsync(STORY_DATA_IDENTIFIER, "root");
+                var folder = await FilesSnippets.CreateFolderAsync(STORY_DATA_IDENTIFIER, "root");
 
                 // Copy the new file into the new folder.
-                var copiedFileId = await FilesOperations.CopyFileAsync(createdFileId, folder.Id);
+                var copiedFileId = await FilesSnippets.CopyFileAsync(createdFileId, folder.Id);
 
                 // Clean up. 
                 // Comment out if you want to see the file, the folder, and the copied file.
-                await FilesOperations.DeleteFileAsync(createdFileId);
-                await FilesOperations.DeleteFolderAsync(folder.Id);
-                await FilesOperations.DeleteFileAsync(copiedFileId);
+                await FilesSnippets.DeleteFileAsync(createdFileId);
+                await FilesSnippets.DeleteFolderAsync(folder.Id);
+                await FilesSnippets.DeleteFileAsync(copiedFileId);
 
                 return true;
             }
@@ -203,18 +203,18 @@ namespace O365_Win_Snippets
                 string newFileName = "updated name";
 
                 // Create a file
-                var createdFileId = await FilesOperations.CreateFileAsync(STORY_DATA_IDENTIFIER + "_" + Guid.NewGuid().ToString(), new MemoryStream(Encoding.UTF8.GetBytes("TryUpdateFileAsync")));
+                var createdFileId = await FilesSnippets.CreateFileAsync(STORY_DATA_IDENTIFIER + "_" + Guid.NewGuid().ToString(), new MemoryStream(Encoding.UTF8.GetBytes("TryUpdateFileAsync")));
                 if (createdFileId == null)
                     return false;
 
-                var fileName = await FilesOperations.RenameFileAsync(createdFileId, "updated name");
+                var fileName = await FilesSnippets.RenameFileAsync(createdFileId, "updated name");
 
                 if (fileName != newFileName)
                     return false;
 
                 //Cleanup
 
-                await FilesOperations.DeleteFileAsync(createdFileId);
+                await FilesSnippets.DeleteFileAsync(createdFileId);
 
                 return true;
 
@@ -228,7 +228,7 @@ namespace O365_Win_Snippets
 
         public static async Task<bool> TryGetFolderChildrenAsync()
         {
-            var items = await FilesOperations.GetFolderChildrenAsync("root");
+            var items = await FilesSnippets.GetFolderChildrenAsync("root");
             return items != null;
         }
 
@@ -236,10 +236,10 @@ namespace O365_Win_Snippets
         {
             try
             {
-                var folder = await FilesOperations.CreateFolderAsync(STORY_DATA_IDENTIFIER, "root");
+                var folder = await FilesSnippets.CreateFolderAsync(STORY_DATA_IDENTIFIER, "root");
 
                 //Cleanup. Comment if you want to see the new folder under your root folder.
-                await FilesOperations.DeleteFolderAsync(folder.Id);
+                await FilesSnippets.DeleteFolderAsync(folder.Id);
 
                 return folder != null;
             }
@@ -251,10 +251,10 @@ namespace O365_Win_Snippets
         {
             try
             {
-                var folder = await FilesOperations.CreateFolderAsync(STORY_DATA_IDENTIFIER, "root");
+                var folder = await FilesSnippets.CreateFolderAsync(STORY_DATA_IDENTIFIER, "root");
 
 
-                var result = await FilesOperations.DeleteFolderAsync(folder.Id);
+                var result = await FilesSnippets.DeleteFolderAsync(folder.Id);
                 if (!result)
                     return false;
 

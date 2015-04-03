@@ -106,14 +106,14 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="AuthenticationHelper.cs" />
-    <Compile Include="Calendar\CalendarOperations.cs" />
+    <Compile Include="Calendar\CalendarSnippets.cs" />
     <Compile Include="Calendar\CalendarStories.cs" />
-    <Compile Include="Contacts\ContactsOperations.cs" />
+    <Compile Include="Contacts\ContactsSnippets.cs" />
     <Compile Include="Contacts\ContactsStories.cs" />
     <Compile Include="DurationToDurationStringConverter.cs" />
-    <Compile Include="Email\EmailOperations.cs" />
+    <Compile Include="Email\EmailSnippets.cs" />
     <Compile Include="Email\EmailStories.cs" />
-    <Compile Include="Files\FilesOperations.cs" />
+    <Compile Include="Files\FilesSnippets.cs" />
     <Compile Include="Files\FilesStories.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -121,7 +121,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResultToBrushConverter.cs" />
     <Compile Include="StoryDefinition.cs" />
-    <Compile Include="UsersAndGroups\UsersAndGroupsOperations.cs" />
+    <Compile Include="UsersAndGroups\UsersAndGroupsSnippets.cs" />
     <Compile Include="UsersAndGroups\UsersAndGroupsStories.cs" />
     <Compile Include="ViewModelBase.cs" />
   </ItemGroup>

@@ -12,20 +12,20 @@ namespace O365_Win_Snippets
 
         public static async Task<bool> TryGetOutlookClientAsync()
         {
-            var outlookClient = await ContactsOperations.GetOutlookClientAsync();
+            var outlookClient = await ContactsSnippets.GetOutlookClientAsync();
             return outlookClient != null;
         }
 
         public static async Task<bool> TryGetContactsAsync()
         {
-            var contacts = await ContactsOperations.GetContactsPageAsync();
+            var contacts = await ContactsSnippets.GetContactsPageAsync();
 
             return contacts != null;
         }
 
         public static async Task<bool> TryGetContactAsync()
         {
-            var newContact = await ContactsOperations.AddContactItemAsync(
+            var newContact = await ContactsSnippets.AddContactItemAsync(
                 Guid.NewGuid().ToString(),
                 Guid.NewGuid().ToString(),
                 STORY_DATA_IDENTIFIER,
@@ -34,18 +34,18 @@ namespace O365_Win_Snippets
                 Guid.NewGuid().ToString(),
                 Guid.NewGuid().ToString());
 
-            var contact = await ContactsOperations.GetContactAsync(newContact.Id);
+            var contact = await ContactsSnippets.GetContactAsync(newContact.Id);
 
             //Cleanup
 
-            await ContactsOperations.DeleteContactAsync(newContact.Id);
+            await ContactsSnippets.DeleteContactAsync(newContact.Id);
 
             return contact != null;
         }
 
         public static async Task<bool> TryAddNewContactAsync()
         {
-            var newContact = await ContactsOperations.AddContactItemAsync(
+            var newContact = await ContactsSnippets.AddContactItemAsync(
                 Guid.NewGuid().ToString(),
                 Guid.NewGuid().ToString(),
                 STORY_DATA_IDENTIFIER,
@@ -56,14 +56,14 @@ namespace O365_Win_Snippets
 
             //Cleanup
 
-            await ContactsOperations.DeleteContactAsync(newContact.Id);
+            await ContactsSnippets.DeleteContactAsync(newContact.Id);
 
             return newContact != null;
         }
 
         public static async Task<bool> TryUpdateContactAsync()
         {
-            var testContact = await ContactsOperations.AddContactItemAsync(
+            var testContact = await ContactsSnippets.AddContactItemAsync(
                 "FileAsValue",
                 "FirstNameValue",
                 STORY_DATA_IDENTIFIER,
@@ -78,7 +78,7 @@ namespace O365_Win_Snippets
 
 
             // Update our contact
-            await ContactsOperations.UpdateContactItemAsync(
+            await ContactsSnippets.UpdateContactItemAsync(
                  testContact.Id,
                  "NewFileAsValue",
                 "FirstNameValue",
@@ -89,13 +89,13 @@ namespace O365_Win_Snippets
                 "MobilePhoneValue",
                 null);
 
-            var contactCheck = await ContactsOperations.GetContactAsync(testContact.Id);
+            var contactCheck = await ContactsSnippets.GetContactAsync(testContact.Id);
             if (contactCheck == null)
                 return false;
 
             //Cleanup
 
-            await ContactsOperations.DeleteContactAsync(testContact.Id);
+            await ContactsSnippets.DeleteContactAsync(testContact.Id);
 
             return (contactCheck.FileAs == "NewFileAsValue" && contactCheck.JobTitle == "NewJobTitleValue");
 
@@ -104,7 +104,7 @@ namespace O365_Win_Snippets
 
         public static async Task<bool> TryDeleteContactAsync()
         {
-            var newContact = await ContactsOperations.AddContactItemAsync(
+            var newContact = await ContactsSnippets.AddContactItemAsync(
                 Guid.NewGuid().ToString(),
                 Guid.NewGuid().ToString(),
                 STORY_DATA_IDENTIFIER,
@@ -118,17 +118,17 @@ namespace O365_Win_Snippets
                 return false;
 
             // Verify that count has increased by 1
-            var contactCheck = await ContactsOperations.GetContactAsync(newContact.Id);
+            var contactCheck = await ContactsSnippets.GetContactAsync(newContact.Id);
             if (contactCheck == null)
                 return false;
 
             // Delete contact we added
-            var contactDeleted = await ContactsOperations.DeleteContactAsync(newContact.Id);
+            var contactDeleted = await ContactsSnippets.DeleteContactAsync(newContact.Id);
             if (!contactDeleted)
                 return false;
 
 
-            contactCheck = await ContactsOperations.GetContactAsync(newContact.Id);
+            contactCheck = await ContactsSnippets.GetContactAsync(newContact.Id);
             return (contactCheck == null);
 
         }

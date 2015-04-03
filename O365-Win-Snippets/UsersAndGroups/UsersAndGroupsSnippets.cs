@@ -8,9 +8,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+//Snippets in this file:
+//
+//GetGraphClientAsync
+//GetUsersAsync
+//GetTenantDetailsAsync
+//GetGroupsAsync
+
+
 namespace O365_Win_Snippets
 {
-    class UsersAndGroupsOperations
+    class UsersAndGroupsSnippets
     {
         /// <summary>
         /// Checks that a Graph client is available to the client.

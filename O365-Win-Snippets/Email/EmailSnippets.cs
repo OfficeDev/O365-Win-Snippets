@@ -8,9 +8,32 @@ using Microsoft.Office365.Discovery;
 using Microsoft.Office365.OutlookServices;
 using Microsoft.Office365.OutlookServices.Extensions;
 
+//Snippets in this file:
+//
+//GetOutlookClientAsync
+//GetInboxMessagesAsync
+//GetMessagesAsync
+//GetMessagesAsync(string subject, DateTimeOffset after)
+//SendMessageAsync
+//CreateDraftAsync
+//CreateDraftAndSendAsync
+//UpdateMessageAsync
+//ReplyMessageAsync
+//ReplyAllAsync
+//ForwardMessageAsync
+//MoveMessageAsync
+//CopyMessageAsync
+//DeleteMessageAsync
+//GetMailFoldersAsync
+//CreateMailFolderAsync
+//UpdateMailFolderAsync
+//MoveMailFolderAsync
+//CopyMailFolderAsync
+//DeleteMailFolderAsync
+
 namespace O365_Win_Snippets
 {
-    class EmailOperations
+    class EmailSnippets
     {
         private static OutlookServicesClient _outlookClient = null;
 

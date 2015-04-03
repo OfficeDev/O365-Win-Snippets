@@ -12,33 +12,33 @@ namespace O365_Win_Snippets
 
         public static async Task<bool> TryGetOutlookClientAsync()
         {
-            var outlookClient = await CalendarOperations.GetOutlookClientAsync();
+            var outlookClient = await CalendarSnippets.GetOutlookClientAsync();
             return outlookClient != null;
         }
 
         public static async Task<bool> TryGetCalendarEventsAsync()
         {
-            var events = await CalendarOperations.GetCalendarEventsAsync();
+            var events = await CalendarSnippets.GetCalendarEventsAsync();
 
             return events != null;
         }
 
         public static async Task<bool> TryCreateCalendarEventAsync()
         {
-            var newEventId = await CalendarOperations.AddCalendarEventAsync();
+            var newEventId = await CalendarSnippets.AddCalendarEventAsync();
 
             if (newEventId == null)
                 return false;
 
             //Cleanup
-            await CalendarOperations.DeleteCalendarEventAsync(newEventId);
+            await CalendarSnippets.DeleteCalendarEventAsync(newEventId);
 
             return true;
         }
 
         public static async Task<bool> TryCreateCalendarEventWithArgsAsync()
         {
-            var newEventId = await CalendarOperations.AddCalendarEventWithArgsAsync(
+            var newEventId = await CalendarSnippets.AddCalendarEventWithArgsAsync(
                             Guid.NewGuid().ToString(),
                             STORY_DATA_IDENTIFIER,
                             string.Empty,
@@ -53,7 +53,7 @@ namespace O365_Win_Snippets
                 return false;
 
             //Cleanup
-            await CalendarOperations.DeleteCalendarEventAsync(newEventId);
+            await CalendarSnippets.DeleteCalendarEventAsync(newEventId);
 
             return true;
         }
@@ -61,7 +61,7 @@ namespace O365_Win_Snippets
         public static async Task<bool> TryUpdateCalendarEventAsync()
         {
 
-            var newEventId = await CalendarOperations.AddCalendarEventWithArgsAsync(
+            var newEventId = await CalendarSnippets.AddCalendarEventWithArgsAsync(
                             "OrigLocationValue",
                             STORY_DATA_IDENTIFIER,
                             string.Empty,
@@ -76,7 +76,7 @@ namespace O365_Win_Snippets
                 return false;
 
             // Update our event
-            var updatedEvent = await CalendarOperations.UpdateCalendarEventAsync(newEventId,
+            var updatedEvent = await CalendarSnippets.UpdateCalendarEventAsync(newEventId,
                            "NewLocationValue",
                            STORY_DATA_IDENTIFIER,
                            string.Empty,
@@ -91,7 +91,7 @@ namespace O365_Win_Snippets
                 return false;
 
             //Cleanup
-            await CalendarOperations.DeleteCalendarEventAsync(newEventId);
+            await CalendarSnippets.DeleteCalendarEventAsync(newEventId);
 
 
             return true;
@@ -99,13 +99,13 @@ namespace O365_Win_Snippets
 
         public static async Task<bool> TryDeleteCalendarEventAsync()
         {
-            var newEventId = await CalendarOperations.AddCalendarEventAsync();
+            var newEventId = await CalendarSnippets.AddCalendarEventAsync();
 
             if (newEventId == null)
                 return false;
 
             // Delete the event
-            var deletedEvent = await CalendarOperations.DeleteCalendarEventAsync(newEventId);
+            var deletedEvent = await CalendarSnippets.DeleteCalendarEventAsync(newEventId);
             if (deletedEvent == null)
                 return false;
 

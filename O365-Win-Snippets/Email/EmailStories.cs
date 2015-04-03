@@ -18,20 +18,20 @@ namespace O365_Win_Snippets
 
         public static async Task<bool> TryGetOutlookClientAsync()
         {
-            var exchangeClient = await EmailOperations.GetOutlookClientAsync();
+            var exchangeClient = await EmailSnippets.GetOutlookClientAsync();
             return exchangeClient != null;
         }
 
         public static async Task<bool> TryGetInboxMessagesAsync()
         {
-            var messages = await EmailOperations.GetInboxMessagesAsync();
+            var messages = await EmailSnippets.GetInboxMessagesAsync();
 
             return messages != null;
         }
 
         public static async Task<bool> TryGetMessagesAsync()
         {
-            var messages = await EmailOperations.GetMessagesAsync();
+            var messages = await EmailSnippets.GetMessagesAsync();
             return messages != null;
         }
 
@@ -41,7 +41,7 @@ namespace O365_Win_Snippets
             try
             {
 
-                 bool isSent= await EmailOperations.SendMessageAsync(
+                 bool isSent= await EmailSnippets.SendMessageAsync(
                     STORY_DATA_IDENTIFIER,
                     DEFAULT_MESSAGE_BODY,
                     AuthenticationHelper.LoggedInUserEmail
@@ -61,7 +61,7 @@ namespace O365_Win_Snippets
             try
             {
                 // Create the draft message.
-                var newMessageId = await EmailOperations.CreateDraftAsync(
+                var newMessageId = await EmailSnippets.CreateDraftAsync(
                         STORY_DATA_IDENTIFIER,
                         DEFAULT_MESSAGE_BODY,
                         AuthenticationHelper.LoggedInUserEmail
@@ -71,7 +71,7 @@ namespace O365_Win_Snippets
                     return false;
 
                 //Cleanup
-                await EmailOperations.DeleteMessageAsync(newMessageId);
+                await EmailSnippets.DeleteMessageAsync(newMessageId);
 
                     return true;
                 
@@ -88,7 +88,7 @@ namespace O365_Win_Snippets
                 // Create a draft message and then send it. If you send the message without first creating a draft, you can't easily retrieve 
                 // the message Id.
 
-                var newMessageId = await EmailOperations.CreateDraftAndSendAsync(
+                var newMessageId = await EmailSnippets.CreateDraftAndSendAsync(
                         STORY_DATA_IDENTIFIER,
                         DEFAULT_MESSAGE_BODY,
                         AuthenticationHelper.LoggedInUserEmail
@@ -103,7 +103,7 @@ namespace O365_Win_Snippets
                     return false;
 
                 // Reply to the message.
-                bool isReplied = await EmailOperations.ReplyMessageAsync(
+                bool isReplied = await EmailSnippets.ReplyMessageAsync(
                     sentMessageId,
                     DEFAULT_MESSAGE_BODY);
 
@@ -121,7 +121,7 @@ namespace O365_Win_Snippets
                 // Create a draft message and then send it. If you send the message without first creating a draft, you can't easily retrieve 
                 // the message Id.
 
-                var newMessageId = await EmailOperations.CreateDraftAndSendAsync(
+                var newMessageId = await EmailSnippets.CreateDraftAndSendAsync(
                         STORY_DATA_IDENTIFIER,
                         DEFAULT_MESSAGE_BODY,
                         AuthenticationHelper.LoggedInUserEmail
@@ -137,7 +137,7 @@ namespace O365_Win_Snippets
                     return false;
 
                 // Reply to the message.
-                bool isReplied = await EmailOperations.ReplyAllAsync(
+                bool isReplied = await EmailSnippets.ReplyAllAsync(
                                 sentMessageId,
                                 DEFAULT_MESSAGE_BODY);
 
@@ -155,7 +155,7 @@ namespace O365_Win_Snippets
                 // Create a draft message and then send it. If you send the message without first creating a draft, you can't easily retrieve 
                 // the message Id.
 
-                var newMessageId = await EmailOperations.CreateDraftAndSendAsync(
+                var newMessageId = await EmailSnippets.CreateDraftAndSendAsync(
                         STORY_DATA_IDENTIFIER,
                         DEFAULT_MESSAGE_BODY,
                         AuthenticationHelper.LoggedInUserEmail
@@ -170,7 +170,7 @@ namespace O365_Win_Snippets
                     return false;
 
                 // Reply to the message.
-                bool isReplied = await EmailOperations.ForwardMessageAsync(
+                bool isReplied = await EmailSnippets.ForwardMessageAsync(
                                sentMessageId,
                                DEFAULT_MESSAGE_BODY,
                                AuthenticationHelper.LoggedInUserEmail);
@@ -187,7 +187,7 @@ namespace O365_Win_Snippets
             try
             {
                 // Create a draft message. If you send the message without first creating a draft, you can't easily retrieve the message Id.
-                var newMessageId = await EmailOperations.CreateDraftAsync(
+                var newMessageId = await EmailSnippets.CreateDraftAsync(
                         STORY_DATA_IDENTIFIER,
                         DEFAULT_MESSAGE_BODY,
                         AuthenticationHelper.LoggedInUserEmail
@@ -197,12 +197,12 @@ namespace O365_Win_Snippets
                     return false;
 
                 // Update the message.
-                bool isUpdated = await EmailOperations.UpdateMessageAsync(
+                bool isUpdated = await EmailSnippets.UpdateMessageAsync(
                     newMessageId,
                     DEFAULT_MESSAGE_BODY);
 
                 //Cleanup. Comment if you want to verify the update in your Drafts folder.
-                await EmailOperations.DeleteMessageAsync(newMessageId);
+                await EmailSnippets.DeleteMessageAsync(newMessageId);
 
                 return isUpdated;
             }
@@ -217,7 +217,7 @@ namespace O365_Win_Snippets
                 // Create a draft message and then send it. If you send the message without first creating a draft, you can't easily retrieve 
                 // the message Id.
 
-                var newMessageId = await EmailOperations.CreateDraftAndSendAsync(
+                var newMessageId = await EmailSnippets.CreateDraftAndSendAsync(
                         STORY_DATA_IDENTIFIER,
                         DEFAULT_MESSAGE_BODY,
                         AuthenticationHelper.LoggedInUserEmail
@@ -232,7 +232,7 @@ namespace O365_Win_Snippets
                     return false;
 
                 // Reply to the message.
-                bool isReplied = await EmailOperations.MoveMessageAsync(
+                bool isReplied = await EmailSnippets.MoveMessageAsync(
                                 sentMessageId,
                                 "Inbox",
                                 "Drafts");
@@ -251,7 +251,7 @@ namespace O365_Win_Snippets
                 // Create a draft message and then send it. If you send the message without first creating a draft, you can't easily retrieve 
                 // the message Id.
 
-                var newMessageId = await EmailOperations.CreateDraftAndSendAsync(
+                var newMessageId = await EmailSnippets.CreateDraftAndSendAsync(
                         STORY_DATA_IDENTIFIER,
                         DEFAULT_MESSAGE_BODY,
                         AuthenticationHelper.LoggedInUserEmail
@@ -265,7 +265,7 @@ namespace O365_Win_Snippets
                     return false;
 
                 // Reply to the message.
-                bool isReplied = await EmailOperations.CopyMessageAsync(
+                bool isReplied = await EmailSnippets.CopyMessageAsync(
                                 sentMessageId,
                                 "Inbox",
                                 "Drafts");
@@ -282,7 +282,7 @@ namespace O365_Win_Snippets
             try
             {
                 // Create a draft message. If you send the message without first creating a draft, you can't easily retrieve the message Id.
-                var newMessageId = await EmailOperations.CreateDraftAsync(
+                var newMessageId = await EmailSnippets.CreateDraftAsync(
                         STORY_DATA_IDENTIFIER,
                         DEFAULT_MESSAGE_BODY,
                         AuthenticationHelper.LoggedInUserEmail
@@ -292,7 +292,7 @@ namespace O365_Win_Snippets
                     return false;
 
                 // Delete the message.
-                var isDeleted = await EmailOperations.DeleteMessageAsync(newMessageId);
+                var isDeleted = await EmailSnippets.DeleteMessageAsync(newMessageId);
 
                 return isDeleted;
             }
@@ -304,7 +304,7 @@ namespace O365_Win_Snippets
             try
             {
                 // The example gets the Inbox and its siblings.
-                var foldersResults = await EmailOperations.GetMailFoldersAsync();
+                var foldersResults = await EmailSnippets.GetMailFoldersAsync();
 
                 foreach (var folder in foldersResults.CurrentPage)
                 {
@@ -325,13 +325,13 @@ namespace O365_Win_Snippets
         {
             try
             {
-                var folderId = await EmailOperations.CreateMailFolderAsync("Inbox", "FolderToDelete");
+                var folderId = await EmailSnippets.CreateMailFolderAsync("Inbox", "FolderToDelete");
 
 
                 if (!string.IsNullOrEmpty(folderId))
                 {
                     //Cleanup
-                    await EmailOperations.DeleteMailFolderAsync(folderId);
+                    await EmailSnippets.DeleteMailFolderAsync(folderId);
 
                     return true;
                 }
@@ -346,16 +346,16 @@ namespace O365_Win_Snippets
         {
             try
             {
-                var folderId = await EmailOperations.CreateMailFolderAsync("Inbox", "FolderToUpdateAndDelete");
+                var folderId = await EmailSnippets.CreateMailFolderAsync("Inbox", "FolderToUpdateAndDelete");
 
 
                 if (!string.IsNullOrEmpty(folderId))
                 {
 
-                    bool isFolderUpdated = await EmailOperations.UpdateMailFolderAsync(folderId, "FolderToDelete");
+                    bool isFolderUpdated = await EmailSnippets.UpdateMailFolderAsync(folderId, "FolderToDelete");
 
                     //Cleanup
-                    await EmailOperations.DeleteMailFolderAsync(folderId);
+                    await EmailSnippets.DeleteMailFolderAsync(folderId);
 
                     return isFolderUpdated;
                 }
@@ -370,16 +370,16 @@ namespace O365_Win_Snippets
         {
             try
             {
-                var folderId = await EmailOperations.CreateMailFolderAsync("Inbox", "FolderToDelete");
+                var folderId = await EmailSnippets.CreateMailFolderAsync("Inbox", "FolderToDelete");
 
 
                 if (!string.IsNullOrEmpty(folderId))
                 {
 
-                    bool isFolderMoved = await EmailOperations.MoveMailFolderAsync(folderId, "Drafts");
+                    bool isFolderMoved = await EmailSnippets.MoveMailFolderAsync(folderId, "Drafts");
 
                     //Cleanup
-                    await EmailOperations.DeleteMailFolderAsync(folderId);
+                    await EmailSnippets.DeleteMailFolderAsync(folderId);
 
                     return isFolderMoved;
                 }
@@ -394,20 +394,20 @@ namespace O365_Win_Snippets
         {
             try
             {
-                var folderId = await EmailOperations.CreateMailFolderAsync("Inbox", "FolderToCopyAndDelete");
+                var folderId = await EmailSnippets.CreateMailFolderAsync("Inbox", "FolderToCopyAndDelete");
 
 
                 if (!string.IsNullOrEmpty(folderId))
                 {
 
-                    string copiedFolderId = await EmailOperations.CopyMailFolderAsync(folderId, "Drafts");
+                    string copiedFolderId = await EmailSnippets.CopyMailFolderAsync(folderId, "Drafts");
 
                     if (!string.IsNullOrEmpty(copiedFolderId))
                     {
 
                         //Cleanup
-                        await EmailOperations.DeleteMailFolderAsync(folderId);
-                        await EmailOperations.DeleteMailFolderAsync(copiedFolderId);
+                        await EmailSnippets.DeleteMailFolderAsync(folderId);
+                        await EmailSnippets.DeleteMailFolderAsync(copiedFolderId);
 
                         return true;
                     }
@@ -423,9 +423,9 @@ namespace O365_Win_Snippets
         {
             try
             {
-                var folderId = await EmailOperations.CreateMailFolderAsync("Inbox", "FolderToDelete");
+                var folderId = await EmailSnippets.CreateMailFolderAsync("Inbox", "FolderToDelete");
 
-                var isFolderDeleted = await EmailOperations.DeleteMailFolderAsync(folderId);
+                var isFolderDeleted = await EmailSnippets.DeleteMailFolderAsync(folderId);
                 return isFolderDeleted;
             }
             catch { return false; }
@@ -436,7 +436,7 @@ namespace O365_Win_Snippets
             // Search for a maximum of 10 times
             for (int i = 0; i < 10; i++)
             {
-                var message = await EmailOperations.GetMessagesAsync(STORY_DATA_IDENTIFIER
+                var message = await EmailSnippets.GetMessagesAsync(STORY_DATA_IDENTIFIER
                                               , DateTimeOffset.Now.Subtract(new TimeSpan(0, 1, 0)));
                 if (message != null)
                     return message.Id;

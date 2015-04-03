@@ -10,9 +10,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+//Snippets in this file:
+//
+//GetSharePointClientAsync
+//CreateFileAsync
+//UpdateFileContentAsync
+//DownloadFileAsync
+//DeleteFileAsync
+//CopyFileAsync
+//RenameFileAsync
+//GetFolderChildrenAsync
+//CreateFolderAsync
+//DeleteFolderAsync
+
 namespace O365_Win_Snippets
 {
-    class FilesOperations
+    class FilesSnippets
     {
         private static SharePointClient _sharePointClient = null;
 

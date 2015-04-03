@@ -8,9 +8,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+//Snippets in this file:
+//GetOutlookClientAsync
+//GetContactsPageAsync
+//GetContactAsync
+//AddContactItemAsync
+//UpdateContactItemAsync
+//DeleteContactAsync
+
+
 namespace O365_Win_Snippets
 {
-    public static class ContactsOperations
+    public static class ContactsSnippets
     {
 
         private static OutlookServicesClient _outlookClient = null;
