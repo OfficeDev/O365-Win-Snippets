@@ -1,5 +1,15 @@
 # O365-Win-Snippets
 
+**Table of contents**
+
+* [Introduction](#introduction)
+* [Register and configure the apps](#register)
+* [Build and debug](#build)
+* [Add a snippet](#add-a-snippet)
+* [Next steps](#next-steps)
+* [Additional resources](#additional-resources)
+
+<a name="introduction"></a>
 ##Introduction
 
 The Office 365 Windows Snippets project contains a repository of code snippets that show you how to use the client libraries from the Office 365 API tools to interact with Office 365 objects, including users, groups, calendars, contacts, mail, files, and folders.
@@ -14,6 +24,7 @@ After you choose to run all or run selected snippets, you'll be prompted to auth
 
 **Note:** This project contains code that authenticates and connects a user to Office 365, but if you want to learn about authentication specifically, look at the [Connecting to Office 365 in Windows Store, Phone, and universal apps](https://github.com/OfficeDev/O365-Win-Connect).
 
+<a name="register"></a>
 ###Register and configure the apps
 
 You can register each app with the Office 365 API Tools for Visual Studio. Be sure to download and install the [Office 365 API tools](http://aka.ms/k0534n) from the Visual Studio Gallery.
@@ -38,12 +49,14 @@ The dialog will look like this:
 ![](/Readme-images/ConnectedServices.PNG "Windows Phone interface for the O365-WinPlatform-Connect sample")
    7. After you click **OK** in the Services Manager dialog box, assemblies for connecting to Office 365 APIs will be added to your project.
 
+<a name="build"></a>
 ## Build and debug ##
 
 After you've loaded the solution in Visual Studio, press F5 to build and debug.
 Run the solution and sign in with your organizational account to Office 365.
 
-##Adding a snippet
+<a name="add-a-snippet"></a>
+##Add a snippet
 
 If you have a snippet of your own and you would like to run it in this project, or even contribute it to this sample, follow these steps:
 
@@ -92,12 +105,14 @@ Sometimes your story will need to run snippets in addition to the one that you'r
 
 5. Test your snippet. When you run the app, your snippet will appear as a new box in the grid. Select the box for your snippet, and then run it. Use this as an opportunity to debug your snippet.
 
+<a name="next-steps"></a>
 ## Next steps ##
 
 - If you have any trouble running this sample, please [log an issue](https://github.com/OfficeDev/O365-Win-Snippets/issues).
 - If you're interested in a sample that has a richer interface for interacting with the Office 365 services in a Windows app, look at the [Office 365 Starter Project for Windows Store App](https://github.com/OfficeDev/O365-Windows-Start).
 - For more details on what else you can do with the Office 365 services in your Windows app, start with the [Getting started](http://aka.ms/rpx192) page on dev.office.com.
 
+<a name="additional-resources"></a>
 ## Additional resources ##
 
 - [Office 365 APIs documentation](http://aka.ms/kbwa5c)
