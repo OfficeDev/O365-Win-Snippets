@@ -18,7 +18,7 @@ You can use this project to learn how to work with entities and data in Office 3
 
 The image below shows what you'll see when you launch the app.
 
-![](/Readme-images/LaunchScreen.png "Windows Phone interface for the O365-WinPlatform-Connect sample")
+![](/Readme-images/MainPage.png "Windows Phone interface for the O365-WinPlatform-Connect sample")
 
 After you choose to run all or run selected snippets, you'll be prompted to authenticate with your Office 365 account credentials, and the snippets will run.
 
