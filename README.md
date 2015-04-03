@@ -4,7 +4,7 @@
 
 The Office 365 Windows Snippets project contains a repository of code snippets that show you how to use the client libraries from the Office 365 API tools to interact with Office 365 objects, including users, groups, calendars, contacts, mail, files, and folders.
 
-You can use this project to learn how to work with entities and data in Office 365 services. You can also use it as a source of code snippets that you can use in your own projects. 
+You can use this project to learn how to work with entities and data in Office 365 services. You can also use it as a source of code snippets for your own projects. 
 
 The image below shows what you'll see when you launch the app.
 
@@ -45,7 +45,7 @@ Run the solution and sign in with your organizational account to Office 365.
 
 ##Adding a snippet
 
-If you have a snippet of your own and you would like to run it in this project, and even contribute it to this sample, follow these steps:
+If you have a snippet of your own and you would like to run it in this project, or even contribute it to this sample, follow these steps:
 
 1. Identify the operations file where your snippet belongs. For example, if it works with Calendars, choose the Calendar\CalendarOperations.cs file.
 2. Add your snippet to the operations file. Be sure to include a try/catch block. The snippet below is an example of a simple snippet that gets one page of calendar events:
@@ -70,7 +70,7 @@ If you have a snippet of your own and you would like to run it in this project, 
             }
             catch { return null; }
         }
-3. Create a story that implements your snippet and add it to the associated stories file. For example, the `TryCreateCalendarEventAsync()` story implements the `AddCalendarEventAsync ()` snippet:
+3. Create a story that implements your snippet and add it to the associated stories file. For example, the `TryCreateCalendarEventAsync()` story implements the `AddCalendarEventAsync ()` snippet inside the Calendar\CalendarStories.cs file:
 
         public static async Task<bool> TryCreateCalendarEventAsync()
         {
@@ -84,13 +84,13 @@ If you have a snippet of your own and you would like to run it in this project, 
 
             return true;
         }
-Sometimes your story will need to run snippets in addition to the one that you're implementing. For example, if you want to update an event, you first need to use the `AddCalendarEventAsync()` method to create an event. Then you show how to update it. Always be sure to use snippets that already exist in the operations file. If the operation you need doesn't exist, you'll have to create it and then include it in your story. It's a best practice to delete any entities that you create in a story, especially if you're working on anything other than a test or developer tenant.
+Sometimes your story will need to run snippets in addition to the one that you're implementing. For example, if you want to update an event, you first need to use the `AddCalendarEventAsync()` method to create an event. Then you can update it. Always be sure to use snippets that already exist in the operations file. If the operation you need doesn't exist, you'll have to create it and then include it in your story. It's a best practice to delete any entities that you create in a story, especially if you're working on anything other than a test or developer tenant.
 
 4. Add your story to the story collection in MainPageXaml.cs:
 
 	`StoryCollection.Add(new StoryDefinition() { GroupName = "Calendar", Title = "Create", RunStoryAsync = CalendarStories.TryCreateCalendarEventAsync });`
 
-5. Test your snippet. When you run the app, your snippet will appear as a new box in the grid. Select the box for your snippet, and then run it. Use this as an opportunity to debug your snippet, if necessary.
+5. Test your snippet. When you run the app, your snippet will appear as a new box in the grid. Select the box for your snippet, and then run it. Use this as an opportunity to debug your snippet.
 
 ## Next steps ##
 
