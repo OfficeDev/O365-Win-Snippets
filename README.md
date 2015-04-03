@@ -3,6 +3,7 @@
 **Table of contents**
 
 * [Introduction](#introduction)
+* [Prerequisites](#prerequisites)
 * [Register and configure the apps](#register)
 * [Build and debug](#build)
 * [Add a snippet](#add-a-snippet)
@@ -23,6 +24,15 @@ The image below shows what you'll see when you launch the app.
 After you choose to run all or run selected snippets, you'll be prompted to authenticate with your Office 365 account credentials, and the snippets will run.
 
 **Note:** This project contains code that authenticates and connects a user to Office 365, but if you want to learn about authentication specifically, look at the [Connecting to Office 365 in Windows Store, Phone, and universal apps](https://github.com/OfficeDev/O365-Win-Connect).
+
+<a name="prerequisites"></a>
+## Prerequisites ##
+
+This sample requires the following:  
+  - Visual Studio 2013 with Update 3.  
+  - [Office 365 API Tools version 1.3.41104.1](http://aka.ms/k0534n).  
+  - An Office 365 account. You can sign up for [an Office 365 Developer subscription](http://aka.ms/ro9c62) that includes the resources that you need to start building Office 365 apps.
+ 
 
 <a name="register"></a>
 ###Register and configure the apps
