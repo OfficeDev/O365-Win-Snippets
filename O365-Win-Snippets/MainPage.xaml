@@ -10,6 +10,8 @@
     <Page.Resources>
         <local:ResultToBrushConverter x:Key="ResultToBrushConverter"/>
         <local:DurationToDurationStringConverter x:Key="Duration2String"/>
+        
+        <CollectionViewSource x:Name="StoriesByApi" IsSourceGrouped="True" />
     </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -18,7 +20,7 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="90"/>
             </Grid.RowDefinitions>
-            <GridView Grid.Row="0" ItemsSource="{Binding}" Margin="0,20,0,0" SelectionMode="Multiple" x:Name="StoryGrid">
+            <GridView Grid.Row="0" ItemsSource="{Binding Source={StaticResource StoriesByApi}}" Margin="0,20,0,0" SelectionMode="Multiple" x:Name="StoryGrid">
                 <GridView.ItemTemplate>
                     <DataTemplate>
                         <Border BorderBrush="White" BorderThickness="2" CornerRadius="3" Width="130" Height="130" Margin="9" Background="{Binding Result, Converter={StaticResource ResourceKey=ResultToBrushConverter}}">
@@ -31,6 +33,26 @@
                         </Border>
                     </DataTemplate>
                 </GridView.ItemTemplate>
+
+                <GridView.GroupStyle>
+                    <GroupStyle HidesIfEmpty="True">
+                        <GroupStyle.HeaderTemplate>
+                            <DataTemplate>
+                                <TextBlock Text='{Binding Key}' 
+                                   Margin="12,30,30,30"
+                                   Style="{StaticResource SubheaderTextBlockStyle}"/>
+                            </DataTemplate>
+                        </GroupStyle.HeaderTemplate>
+                    </GroupStyle>
+                </GridView.GroupStyle>
+                
+                <GridView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsWrapGrid GroupPadding="0,0,48,0">
+                            
+                        </ItemsWrapGrid>
+                    </ItemsPanelTemplate>
+                </GridView.ItemsPanel>
             </GridView>
         </Grid>
 

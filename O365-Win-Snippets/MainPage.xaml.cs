@@ -103,8 +103,8 @@ namespace O365_Win_Snippets
             StoryCollection.Add(new StoryDefinition() { GroupName = "Files", Title = "Copy file", RunStoryAsync = FilesStories.TryCopyFileAsync });
             StoryCollection.Add(new StoryDefinition() { GroupName = "Files", Title = "Rename file", RunStoryAsync = FilesStories.TryRenameFileAsync });
 
-
-            this.DataContext = StoryCollection;
+            var result = from story in StoryCollection group story by story.GroupName into api orderby api.Key select api;
+            StoriesByApi.Source = result; 
         }
 
 
