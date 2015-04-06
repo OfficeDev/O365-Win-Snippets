@@ -7,6 +7,7 @@
 * [Register and configure the app](#register)
 * [Build and debug](#build)
 * [Add a snippet](#add-a-snippet)
+* [Questions and comments](#questions)
 * [Next steps](#next-steps)
 * [Additional resources](#additional-resources)
 
@@ -117,6 +118,7 @@ Sometimes your story will need to run snippets in addition to the one that you'r
 
 Now you can test your snippet. When you run the app, your snippet will appear as a new box in the grid. Select the box for your snippet, and then run it. Use this as an opportunity to debug your snippet.
 
+<a name="questions"></a>
 ##Questions and comments##
 
 - If you have any trouble running this sample, please [log an issue](https://github.com/OfficeDev/O365-Win-Snippets/issues).
