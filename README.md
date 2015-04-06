@@ -58,7 +58,8 @@ You can register the app with the Office 365 API Tools for Visual Studio. Be sur
 
 The dialog will look like this:
 ![](/Readme-images/ConnectedServices.PNG "Windows Store connected services")
-   6. After you click **OK** in the Services Manager dialog box, assemblies for connecting to Office 365 APIs will be added to your project. You can select **Build Solution** from the **Build menu** to load the Microsoft.IdentityModel.Clients.ActiveDirectory assembly, or you can wait until you debug.
+
+After you click **OK** in the Services Manager dialog box, assemblies for connecting to Office 365 APIs will be added to your project. You can select **Build Solution** from the **Build menu** to load the Microsoft.IdentityModel.Clients.ActiveDirectory assembly, or you can wait until you debug.
 
 
 <a name="build"></a>
