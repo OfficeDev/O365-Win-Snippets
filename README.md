@@ -52,7 +52,7 @@ You can register the app with the Office 365 API Tools for Visual Studio. Be sur
 	- **Contacts** - Have full access to users' contacts.
 	- **Mail** - Read and write access to users' mail. Send mail as a user.
 	- **My Files** - Edit or delete users' files.
-	- **Users and Groups** - Access your organization's directory. 
+	- **Users and Groups** - Enable sign-on and read users' profiles. Access your organization's directory. 
 	
 
 The dialog will look like this:
