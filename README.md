@@ -40,7 +40,7 @@ This sample requires the following:
 
 You can register the app with the Office 365 API Tools for Visual Studio. Be sure to download and install the [Office 365 API tools](http://aka.ms/k0534n) from the Visual Studio Gallery.
 
-**Note:** If you see any errors while installing packages during step 7 (for example, *Unable to find "Microsoft.IdentityModel.Clients.ActiveDirectory"*) make sure the local path where you placed the solution is not too long/deep. Moving the solution closer to the root of your drive resolves this issue.
+**Note:** If you see any errors while installing packages (for example, *Unable to find "Microsoft.IdentityModel.Clients.ActiveDirectory"*) make sure the local path where you placed the solution is not too long/deep. Moving the solution closer to the root of your drive resolves this issue.
 
    1. Open the O365-Win-Snippets.sln file using Visual Studio 2013.
    2. In the Solution Explorer window, right-click each project name and select Add -> Connected Service.
