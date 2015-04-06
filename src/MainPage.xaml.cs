@@ -83,12 +83,12 @@ namespace O365_Win_Snippets
             StoryCollection.Add(new StoryDefinition() { GroupName = "Email", Title = "Copy", RunStoryAsync = EmailStories.TryCopyMessageAsync });
 
 
-            StoryCollection.Add(new StoryDefinition() { GroupName = "Mail folder", Title = "Read Folders", RunStoryAsync = EmailStories.TryGetMailFoldersAsync });
-            StoryCollection.Add(new StoryDefinition() { GroupName = "Mail folder", Title = "Create", RunStoryAsync = EmailStories.TryCreateMailFolderAsync });
-            StoryCollection.Add(new StoryDefinition() { GroupName = "Mail folder", Title = "Rename", RunStoryAsync = EmailStories.TryUpdateMailFolderAsync });
-            StoryCollection.Add(new StoryDefinition() { GroupName = "Mail folder", Title = "Move", RunStoryAsync = EmailStories.TryMoveMailFolderAsync });
-            StoryCollection.Add(new StoryDefinition() { GroupName = "Mail folder", Title = "Copy", RunStoryAsync = EmailStories.TryCopyMailFolderAsync });
-            StoryCollection.Add(new StoryDefinition() { GroupName = "Mail folder", Title = "Delete", RunStoryAsync = EmailStories.TryDeleteMailFolderAsync });
+            StoryCollection.Add(new StoryDefinition() { GroupName = "Email folder", Title = "Read Folders", RunStoryAsync = EmailStories.TryGetMailFoldersAsync });
+            StoryCollection.Add(new StoryDefinition() { GroupName = "Email folder", Title = "Create", RunStoryAsync = EmailStories.TryCreateMailFolderAsync });
+            StoryCollection.Add(new StoryDefinition() { GroupName = "Email folder", Title = "Rename", RunStoryAsync = EmailStories.TryUpdateMailFolderAsync });
+            StoryCollection.Add(new StoryDefinition() { GroupName = "Email folder", Title = "Move", RunStoryAsync = EmailStories.TryMoveMailFolderAsync });
+            StoryCollection.Add(new StoryDefinition() { GroupName = "Email folder", Title = "Copy", RunStoryAsync = EmailStories.TryCopyMailFolderAsync });
+            StoryCollection.Add(new StoryDefinition() { GroupName = "Email folder", Title = "Delete", RunStoryAsync = EmailStories.TryDeleteMailFolderAsync });
 
 
 

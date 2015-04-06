@@ -25,7 +25,6 @@
                     <DataTemplate>
                         <Border BorderBrush="White" BorderThickness="2" CornerRadius="3" Width="130" Height="130" Margin="9" Background="{Binding Result, Converter={StaticResource ResourceKey=ResultToBrushConverter}}">
                             <StackPanel>
-                                <TextBlock Text="{Binding GroupName}" Margin="6"/>
                                 <ProgressRing IsActive="{Binding IsRunning}" Margin="2" Foreground="White" Height="10" Width="10"/>
                                 <TextBlock Text="{Binding Title}" Margin="6"/>
                                 <TextBlock Text="{Binding DurationMS, Converter={StaticResource Duration2String}}" Margin="10,8,10,4" FontFamily="Courier New"/>
