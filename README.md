@@ -43,11 +43,12 @@ You can register the app with the Office 365 API Tools for Visual Studio. Be sur
 **Note:** If you see any errors while installing packages (for example, *Unable to find "Microsoft.IdentityModel.Clients.ActiveDirectory"*) make sure the local path where you placed the solution is not too long/deep. Moving the solution closer to the root of your drive resolves this issue.
 
    1. Open the O365-Win-Snippets.sln file using Visual Studio 2013.
-   2. In the Solution Explorer window, right-click each project name and select Add -> Connected Service.
-   3. A Services Manager dialog box will appear. Choose **Office 365** and then **Register your app**.
-   4. On the sign-in dialog box, enter the user name and password for your Office 365 tenant. This user name will often follow the pattern <your-name>@<tenant-name>.onmicrosoft.com. If you don't already have an Office 365 tenant, you can get a free Developer Site as part of your MSDN Benefits or sign up for a free trial. After you're signed in, you will see a list of all the services. No permissions will be selected, since the app is not registered to use any services yet. 
+   2. Build the solution. The NuGet Package Restore feature will load the assemblies listed in the packages.config file. You should do this before adding connected services in the following steps so that you don't get older versions of some assemblies.
+   3. In the Solution Explorer window, right-click each project name and select Add -> Connected Service.
+   4. A Services Manager dialog box will appear. Choose **Office 365** and then **Register your app**.
+   5. On the sign-in dialog box, enter the user name and password for your Office 365 tenant. This user name will often follow the pattern <your-name>@<tenant-name>.onmicrosoft.com. If you don't already have an Office 365 tenant, you can get a free Developer Site as part of your MSDN Benefits or sign up for a free trial. After you're signed in, you will see a list of all the services. No permissions will be selected, since the app is not registered to use any services yet. 
    
-   5. To register for the services used in this sample, choose the following services and permissions:
+   6. To register for the services used in this sample, choose the following services and permissions:
 
  	- **Calendar** - Have full access to users' calendars.
 	- **Contacts** - Have full access to users' contacts.
@@ -59,7 +60,7 @@ You can register the app with the Office 365 API Tools for Visual Studio. Be sur
 The dialog will look like this:
 ![](/Readme-images/ConnectedServices.PNG "Windows Store connected services")
 
-After you click **OK** in the Services Manager dialog box, assemblies for connecting to Office 365 APIs will be added to your project. You can select **Build Solution** from the **Build menu** to load the Microsoft.IdentityModel.Clients.ActiveDirectory assembly, or you can wait until you debug.
+After you click **OK** in the Services Manager dialog box, you can select **Build Solution** from the **Build menu** to load the Microsoft.IdentityModel.Clients.ActiveDirectory assembly, or you can wait until you debug.
 
 
 <a name="build"></a>
