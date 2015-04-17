@@ -1,4 +1,4 @@
-# O365-Win-Snippets
+# Office 365 Code Snippets for Windows
 
 **Table of contents**
 
