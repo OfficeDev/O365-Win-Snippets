@@ -7,6 +7,7 @@
 * [Register and configure the app](#register)
 * [Build and debug](#build)
 * [Add a snippet](#add-a-snippet)
+* [Troubleshooting](#troubleshooting)
 * [Questions and comments](#questions)
 * [Next steps](#next-steps)
 * [Additional resources](#additional-resources)
@@ -120,6 +121,7 @@ Sometimes your story will need to run snippets in addition to the one that you'r
 
 Now you can test your snippet. When you run the app, your snippet will appear as a new box in the grid. Select the box for your snippet, and then run it. Use this as an opportunity to debug your snippet.
 
+<a name="troubleshooting"></a>
 ## Troubleshooting ##
 
 - You run the Windows App Certification Kit against the installed app, and the app fails the supported APIs test. This likely happened because the Visual Studio tools installed older versions of some assemblies. Check the entries for Microsoft.Azure.ActiveDirectory.GraphClient and the Microsoft.OData assemblies in your project's packages.config file. Make sure that the version numbers for those assemblies match the version numbers in [this repo's version of packages.config](https://github.com/OfficeDev/O365-Win-Snippets/blob/master/src/packages.config). When you rebuild and reinstall the solution with the updated assemblies, the app should pass the supported APIs test.
