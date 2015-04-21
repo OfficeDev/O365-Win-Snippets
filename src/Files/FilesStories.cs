@@ -189,8 +189,10 @@ namespace O365_Win_Snippets
                 // Clean up. 
                 // Comment out if you want to see the file, the folder, and the copied file.
                 await FilesSnippets.DeleteFileAsync(createdFileId);
+
+                // Deleting the folder also deletes the file copied into it.
                 await FilesSnippets.DeleteFolderAsync(folder.Id);
-                await FilesSnippets.DeleteFileAsync(copiedFileId);
+
 
                 return true;
             }
