@@ -51,10 +51,10 @@ You can register the app with the Office 365 API Tools for Visual Studio. Be sur
    
    6. To register for the services used in this sample, choose the following services and permissions:
 
- 	- **Calendar** - Have full access to users' calendars.
-	- **Contacts** - Have full access to users' contacts.
-	- **Mail** - Read and write access to users' mail. Send mail as a user.
-	- **My Files** - Edit or delete users' files.
+ 	- **Calendar** - Read and write user calendars.
+	- **Contacts** - Read and write user contacts.
+	- **Mail** - Read and write user mail. Send mail as a user.
+	- **My Files** - Read and write user files.
 	- **Users and Groups** - Enable sign-on and read users' profiles. Access your organization's directory. 
 	
 

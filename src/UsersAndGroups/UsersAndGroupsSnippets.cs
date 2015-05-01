@@ -131,6 +131,12 @@ namespace O365_Win_Snippets
 
                 var groups = await client.Groups.ExecuteAsync();
 
+                if (groups.CurrentPage.Count == 0)
+                {
+                    Debug.WriteLine("No groups.");
+                    return new List<IGroup>(); 
+                }
+
                 Debug.WriteLine("First group in collection: " + groups.CurrentPage[0].DisplayName);
 
                 return groups.CurrentPage.ToList();
