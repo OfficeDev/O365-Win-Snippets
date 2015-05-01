@@ -136,6 +136,12 @@ namespace O365_Win_Snippets
         /// </summary>
         public static void SignOut()
         {
+            //Handle case where user signs out without first running any snippets.
+            if (_authenticationContext == null)
+            {
+                _authenticationContext = new AuthenticationContext(LastAuthority);
+            }
+
             _authenticationContext.TokenCache.Clear();
 
             //Clean up all existing clients
