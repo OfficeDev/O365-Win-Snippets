@@ -3,35 +3,15 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
+using Microsoft.OData.Core;
 using Microsoft.Office365.Discovery;
 using Microsoft.Office365.OutlookServices;
 using Microsoft.Office365.OutlookServices.Extensions;
 
-//Snippets in this file:
-//
-//GetOutlookClientAsync
-//GetInboxMessagesAsync
-//GetMessagesAsync
-//GetMessagesAsync(string subject, DateTimeOffset after)
-//SendMessageAsync
-//CreateDraftAsync
-//CreateDraftAndSendAsync
-//UpdateMessageAsync
-//ReplyMessageAsync
-//ReplyAllAsync
-//ForwardMessageAsync
-//MoveMessageAsync
-//CopyMessageAsync
-//DeleteMessageAsync
-//GetMailFoldersAsync
-//CreateMailFolderAsync
-//UpdateMailFolderAsync
-//MoveMailFolderAsync
-//CopyMailFolderAsync
-//DeleteMailFolderAsync
 
 namespace O365_Win_Snippets
 {
@@ -121,66 +101,58 @@ namespace O365_Win_Snippets
 
         public static async Task<List<IMessage>> GetInboxMessagesAsync()
         {
-            try
+
+            // Make sure we have a reference to the Exchange client
+            OutlookServicesClient outlookClient = await GetOutlookClientAsync();
+
+            //Get messages from a specific folder. Using Inbox this time because it is most likely to be populated.
+            var results = await outlookClient.Me.Folders.GetById("Inbox").Messages.ExecuteAsync();
+
+            if (results.CurrentPage.Count > 0)
             {
-                // Make sure we have a reference to the Exchange client
-                OutlookServicesClient outlookClient = await GetOutlookClientAsync();
-
-                //Get messages from a specific folder. Using Inbox this time because it is most likely to be populated.
-                var results = await outlookClient.Me.Folders.GetById("Inbox").Messages.ExecuteAsync();
-
-                if (results.CurrentPage.Count > 0)
-                {
-                    Debug.WriteLine("First message from Inbox folder:" + results.CurrentPage[0].Id);
-                }
-
-                return results.CurrentPage.ToList();
+                Debug.WriteLine("First message from Inbox folder:" + results.CurrentPage[0].Id);
             }
-            catch { return null; }
+
+            return results.CurrentPage.ToList();
+
         }
 
 
         public static async Task<List<IMessage>> GetMessagesAsync()
         {
 
-            try
+            // Make sure we have a reference to the Exchange client
+            var outlookClient = await GetOutlookClientAsync();
+
+            //Get messages (from Inbox by default)
+            var results = await outlookClient.Me.Messages.ExecuteAsync();
+
+            if (results.CurrentPage.Count > 0)
             {
-                // Make sure we have a reference to the Exchange client
-                var outlookClient = await GetOutlookClientAsync();
-
-                //Get messages (from Inbox by default)
-                var results = await outlookClient.Me.Messages.ExecuteAsync();
-
-                if (results.CurrentPage.Count > 0)
-                {
-                    Debug.WriteLine("First message from Inbox folder:" + results.CurrentPage[0].Id);
-                }
-
-                return results.CurrentPage.ToList();
+                Debug.WriteLine("First message from Inbox folder:" + results.CurrentPage[0].Id);
             }
-            catch { return null; }
+
+            return results.CurrentPage.ToList();
+
         }
 
         public static async Task<IMessage> GetMessagesAsync(string subject, DateTimeOffset after)
         {
 
-            try
-            {
-                // Make sure we have a reference to the Exchange client
-                var outlookClient = await GetOutlookClientAsync();
+            // Make sure we have a reference to the Exchange client
+            var outlookClient = await GetOutlookClientAsync();
 
-                //Get messages (from Inbox by default).
-                // Note: This query is not guaranteed to return 0 or 1 message, so 
-                // I need to use ExecuteAsync. Otherwise, ExecuteSingleAsync will throw
-                // InvalidOperationException.
-                var result = await outlookClient.Me.Messages
-                            .Where(m => m.Subject == subject && m.DateTimeReceived > after)
-                            .ExecuteAsync();
+            //Get messages (from Inbox by default).
+            // Note: This query is not guaranteed to return 0 or 1 message, so 
+            // I need to use ExecuteAsync. Otherwise, ExecuteSingleAsync will throw
+            // InvalidOperationException.
+            var result = await outlookClient.Me.Messages
+                        .Where(m => m.Subject == subject && m.DateTimeReceived > after)
+                        .ExecuteAsync();
 
 
-                return (result.CurrentPage.Count > 0) ? result.CurrentPage[0] : null;
-            }
-            catch { return null; }
+            return (result.CurrentPage.Count > 0) ? result.CurrentPage[0] : null;
+
         }
 
         public static async Task<bool> SendMessageAsync(
@@ -189,42 +161,40 @@ namespace O365_Win_Snippets
             string RecipientAddress
             )
         {
-            try
+
+            // Make sure we have a reference to the Outlook Services client
+            var outlookClient = await GetOutlookClientAsync();
+
+            //Create Body
+            ItemBody body = new ItemBody
             {
-                // Make sure we have a reference to the Outlook Services client
-                var outlookClient = await GetOutlookClientAsync();
-
-                //Create Body
-                ItemBody body = new ItemBody
+                Content = Body,
+                ContentType = BodyType.HTML
+            };
+            List<Recipient> toRecipients = new List<Recipient>();
+            toRecipients.Add(new Recipient
+            {
+                EmailAddress = new EmailAddress
                 {
-                    Content = Body,
-                    ContentType = BodyType.HTML
-                };
-                List<Recipient> toRecipients = new List<Recipient>();
-                toRecipients.Add(new Recipient
-                {
-                    EmailAddress = new EmailAddress
-                    {
-                        Address = RecipientAddress
-                    }
-                });
+                    Address = RecipientAddress
+                }
+            });
 
-                Message newMessage = new Message
-                {
-                    Subject = Subject,
-                    Body = body,
-                    ToRecipients = toRecipients
-                };
+            Message newMessage = new Message
+            {
+                Subject = Subject,
+                Body = body,
+                ToRecipients = toRecipients
+            };
 
-                // To send a message without saving to Sent Items, specify false for  
-                // the SavetoSentItems parameter. 
-                await outlookClient.Me.SendMailAsync(newMessage, true);
+            // To send a message without saving to Sent Items, specify false for  
+            // the SavetoSentItems parameter. 
+            await outlookClient.Me.SendMailAsync(newMessage, true);
 
-                Debug.WriteLine("Sent mail: " + newMessage.Id);
+            Debug.WriteLine("Sent mail: " + newMessage.Id);
 
-                return true;
-            }
-            catch { return false; }
+            return true;
+
         }
 
         public static async Task<string> CreateDraftAsync(
@@ -233,40 +203,37 @@ namespace O365_Win_Snippets
             string RecipientAddress)
         {
 
-            try
+            // Make sure we have a reference to the Outlook Services client
+            OutlookServicesClient outlookClient = await GetOutlookClientAsync();
+
+            ItemBody body = new ItemBody
             {
-                // Make sure we have a reference to the Outlook Services client
-                OutlookServicesClient outlookClient = await GetOutlookClientAsync();
-
-                ItemBody body = new ItemBody
+                Content = Body,
+                ContentType = BodyType.HTML
+            };
+            List<Recipient> toRecipients = new List<Recipient>();
+            toRecipients.Add(new Recipient
+            {
+                EmailAddress = new EmailAddress
                 {
-                    Content = Body,
-                    ContentType = BodyType.HTML
-                };
-                List<Recipient> toRecipients = new List<Recipient>();
-                toRecipients.Add(new Recipient
-                {
-                    EmailAddress = new EmailAddress
-                    {
-                        Address = RecipientAddress
-                    }
-                });
-                Message draftMessage = new Message
-                {
-                    Subject = Subject,
-                    Body = body,
-                    ToRecipients = toRecipients,
-                    Importance = Importance.High
-                };
+                    Address = RecipientAddress
+                }
+            });
+            Message draftMessage = new Message
+            {
+                Subject = Subject,
+                Body = body,
+                ToRecipients = toRecipients,
+                Importance = Importance.High
+            };
 
-                // Save the draft message. Saving to Me.Messages saves the message in the Drafts folder.
-                await outlookClient.Me.Messages.AddMessageAsync(draftMessage);
+            // Save the draft message. Saving to Me.Messages saves the message in the Drafts folder.
+            await outlookClient.Me.Messages.AddMessageAsync(draftMessage);
 
-                Debug.WriteLine("Created draft: " + draftMessage.Id);
+            Debug.WriteLine("Created draft: " + draftMessage.Id);
 
-                return draftMessage.Id;
-            }
-            catch { return null; }
+            return draftMessage.Id;
+
         }
 
         public static async Task<string> CreateDraftAndSendAsync(
@@ -275,44 +242,41 @@ namespace O365_Win_Snippets
             string RecipientAddress)
         {
 
-            try
+            // Make sure we have a reference to the Outlook Services client
+            OutlookServicesClient outlookClient = await GetOutlookClientAsync();
+
+            ItemBody body = new ItemBody
             {
-                // Make sure we have a reference to the Outlook Services client
-                OutlookServicesClient outlookClient = await GetOutlookClientAsync();
-
-                ItemBody body = new ItemBody
+                Content = Body,
+                ContentType = BodyType.HTML
+            };
+            List<Recipient> toRecipients = new List<Recipient>();
+            toRecipients.Add(new Recipient
+            {
+                EmailAddress = new EmailAddress
                 {
-                    Content = Body,
-                    ContentType = BodyType.HTML
-                };
-                List<Recipient> toRecipients = new List<Recipient>();
-                toRecipients.Add(new Recipient
-                {
-                    EmailAddress = new EmailAddress
-                    {
-                        Address = RecipientAddress
-                    }
-                });
-                Message draftMessage = new Message
-                {
-                    Subject = Subject,
-                    Body = body,
-                    ToRecipients = toRecipients,
-                    Importance = Importance.High
-                };
+                    Address = RecipientAddress
+                }
+            });
+            Message draftMessage = new Message
+            {
+                Subject = Subject,
+                Body = body,
+                ToRecipients = toRecipients,
+                Importance = Importance.High
+            };
 
-                // Save the draft message. This ensures that we'll get a message Id to return.
-                await outlookClient.Me.Messages.AddMessageAsync(draftMessage);
+            // Save the draft message. This ensures that we'll get a message Id to return.
+            await outlookClient.Me.Messages.AddMessageAsync(draftMessage);
 
-                //Send the message.
+            //Send the message.
 
-                await outlookClient.Me.Messages[draftMessage.Id].SendAsync();
+            await outlookClient.Me.Messages[draftMessage.Id].SendAsync();
 
-                Debug.WriteLine("Created and sent draft: " + draftMessage.Id);
+            Debug.WriteLine("Created and sent draft: " + draftMessage.Id);
 
-                return draftMessage.Id;
-            }
-            catch { return null; }
+            return draftMessage.Id;
+
         }
 
         public static async Task<bool> UpdateMessageAsync(string MessageId, string UpdatedContent)
@@ -323,7 +287,7 @@ namespace O365_Win_Snippets
                 OutlookServicesClient outlookClient = await GetOutlookClientAsync();
 
                 // Get the message to update and set changed properties
-                IMessage message = await outlookClient.Me.Messages[MessageId].ExecuteAsync();
+                IMessage message = await outlookClient.Me.Messages.GetById(MessageId).ExecuteAsync();
                 message.Body = new ItemBody
                 {
                     Content = UpdatedContent,
@@ -336,7 +300,13 @@ namespace O365_Win_Snippets
 
                 return true;
             }
-            catch { return false; }
+            catch (ODataErrorException ex)
+            {
+                // GetById will throw an ODataErrorException when the 
+                // item with the specified Id can't be found in the contact store on the server. 
+                Debug.WriteLine(ex.Message);
+                return false;
+            }
         }
 
         public static async Task<bool> ReplyMessageAsync(string MessageId, string ReplyContent)
@@ -346,14 +316,20 @@ namespace O365_Win_Snippets
                 // Make sure we have a reference to the Outlook Services client
                 OutlookServicesClient outlookClient = await GetOutlookClientAsync();
 
-                IMessage message = await outlookClient.Me.Messages[MessageId].ExecuteAsync();
+                IMessage message = await outlookClient.Me.Messages.GetById(MessageId).ExecuteAsync();
                 await message.ReplyAsync(ReplyContent);
 
                 Debug.WriteLine("Replied to message: " + message.Id);
 
                 return true;
             }
-            catch { return false; }
+            catch (ODataErrorException ex)
+            {
+                // GetById will throw an ODataErrorException when the 
+                // item with the specified Id can't be found in the contact store on the server. 
+                Debug.WriteLine(ex.Message);
+                return false;
+            }
         }
 
         public static async Task<bool> ReplyAllAsync(string MessageId, string ReplyContent)
@@ -363,7 +339,7 @@ namespace O365_Win_Snippets
                 // Make sure we have a reference to the Outlook Services client
                 OutlookServicesClient outlookClient = await GetOutlookClientAsync();
 
-                IMessage message = await outlookClient.Me.Messages[MessageId].ExecuteAsync();
+                IMessage message = await outlookClient.Me.Messages.GetById(MessageId).ExecuteAsync();
                 await message.ReplyAllAsync(ReplyContent);
 
                 Debug.WriteLine("Replied all to message: " + message.Id);
@@ -371,12 +347,18 @@ namespace O365_Win_Snippets
 
                 return true;
             }
-            catch { return false; }
+            catch (ODataErrorException ex)
+            {
+                // GetById will throw an ODataErrorException when the 
+                // item with the specified Id can't be found in the contact store on the server. 
+                Debug.WriteLine(ex.Message);
+                return false;
+            }
         }
 
         public static async Task<bool> ForwardMessageAsync(
-            string MessageId, 
-            string ForwardMessage, 
+            string MessageId,
+            string ForwardMessage,
             string RecipientAddress)
         {
 
@@ -394,13 +376,19 @@ namespace O365_Win_Snippets
                     }
                 });
 
-                await outlookClient.Me.Messages[MessageId].ForwardAsync(ForwardMessage, toRecipients);
+                await outlookClient.Me.Messages.GetById(MessageId).ForwardAsync(ForwardMessage, toRecipients);
 
                 Debug.WriteLine("Forwarded message: " + MessageId);
 
                 return true;
             }
-            catch { return false; }
+            catch (ODataErrorException ex)
+            {
+                // GetById will throw an ODataErrorException when the 
+                // item with the specified Id can't be found in the contact store on the server. 
+                Debug.WriteLine(ex.Message);
+                return false;
+            }
         }
 
 
@@ -411,14 +399,20 @@ namespace O365_Win_Snippets
                 // Make sure we have a reference to the Outlook Services client
                 OutlookServicesClient outlookClient = await GetOutlookClientAsync();
 
-                IMessage messageToMove = await outlookClient.Me.Messages[MessageId].ExecuteAsync();
+                IMessage messageToMove = await outlookClient.Me.Messages.GetById(MessageId).ExecuteAsync();
                 IMessage movedMessage = await messageToMove.MoveAsync(ToFolder);
 
                 Debug.WriteLine("Moved message: " + MessageId + " from " + OriginalFolder + " to " + ToFolder);
 
                 return true;
             }
-            catch { return false; }
+            catch (ODataErrorException ex)
+            {
+                // GetById will throw an ODataErrorException when the 
+                // item with the specified Id can't be found in the contact store on the server. 
+                Debug.WriteLine(ex.Message);
+                return false;
+            }
         }
 
         public static async Task<bool> CopyMessageAsync(string MessageId, string OriginalFolder, string ToFolder)
@@ -428,14 +422,20 @@ namespace O365_Win_Snippets
                 // Make sure we have a reference to the Outlook Services client
                 OutlookServicesClient outlookClient = await GetOutlookClientAsync();
 
-                IMessage messageToMove = await outlookClient.Me.Messages[MessageId].ExecuteAsync();
+                IMessage messageToMove = await outlookClient.Me.Messages.GetById(MessageId).ExecuteAsync();
                 IMessage movedMessage = await messageToMove.CopyAsync(ToFolder);
 
                 Debug.WriteLine("Copied message: " + MessageId + " from " + OriginalFolder + " to " + ToFolder);
 
                 return true;
             }
-            catch { return false; }
+            catch (ODataErrorException ex)
+            {
+                // GetById will throw an ODataErrorException when the 
+                // item with the specified Id can't be found in the contact store on the server. 
+                Debug.WriteLine(ex.Message);
+                return false;
+            }
         }
 
         public static async Task<bool> DeleteMessageAsync(string MessageId)
@@ -446,35 +446,39 @@ namespace O365_Win_Snippets
                 OutlookServicesClient outlookClient = await GetOutlookClientAsync();
 
                 // Get the message to delete.
-                IMessage message = await outlookClient.Me.Messages[MessageId].ExecuteAsync();
+                IMessage message = await outlookClient.Me.Messages.GetById(MessageId).ExecuteAsync();
                 await message.DeleteAsync();
 
                 Debug.WriteLine("Deleted message: " + MessageId)
 ;
                 return true;
             }
-            catch { return false; }
+            catch (ODataErrorException ex)
+            {
+                // GetById will throw an ODataErrorException when the 
+                // item with the specified Id can't be found in the contact store on the server. 
+                Debug.WriteLine(ex.Message);
+                return false;
+            }
         }
 
         //Mail Folders operations
 
         public static async Task<IPagedCollection<IFolder>> GetMailFoldersAsync()
         {
-            try
-            {
-                OutlookServicesClient outlookClient = await GetOutlookClientAsync();
 
-                IPagedCollection<IFolder> foldersResults = await outlookClient.Me.Folders.ExecuteAsync();
+            OutlookServicesClient outlookClient = await GetOutlookClientAsync();
 
-                string folderId = foldersResults.CurrentPage[0].Id;
+            IPagedCollection<IFolder> foldersResults = await outlookClient.Me.Folders.ExecuteAsync();
 
-                if (string.IsNullOrEmpty(folderId)) return null;
+            string folderId = foldersResults.CurrentPage[0].Id;
 
-                Debug.WriteLine("First mail folder in the collection: " + folderId);
+            if (string.IsNullOrEmpty(folderId)) return null;
 
-                return foldersResults;
-            }
-            catch { return null; }
+            Debug.WriteLine("First mail folder in the collection: " + folderId);
+
+            return foldersResults;
+
         }
 
         public static async Task<string> CreateMailFolderAsync(string ParentFolder, string NewFolderName)
@@ -487,15 +491,20 @@ namespace O365_Win_Snippets
                 {
                     DisplayName = NewFolderName
                 };
-                await outlookClient.Me.Folders[ParentFolder].ChildFolders.AddFolderAsync(newFolder);
+                await outlookClient.Me.Folders.GetById(ParentFolder).ChildFolders.AddFolderAsync(newFolder);
 
                 Debug.WriteLine("Created folder: " + newFolder.Id);
 
                 // Get the ID of the new folder.
                 return newFolder.Id;
-
             }
-            catch { return null; }
+            catch (ODataErrorException ex)
+            {
+                // GetById will throw an ODataErrorException when the 
+                // item with the specified Id can't be found in the contact store on the server. 
+                Debug.WriteLine(ex.Message);
+                return null;
+            }
         }
 
         public static async Task<bool> UpdateMailFolderAsync(string FolderId, string NewFolderName)
@@ -504,7 +513,7 @@ namespace O365_Win_Snippets
             {
                 OutlookServicesClient outlookClient = await GetOutlookClientAsync();
 
-                IFolder folder = await outlookClient.Me.Folders[FolderId].ExecuteAsync();
+                IFolder folder = await outlookClient.Me.Folders.GetById(FolderId).ExecuteAsync();
                 folder.DisplayName = NewFolderName;
                 await folder.UpdateAsync();
                 string updatedName = folder.DisplayName;
@@ -513,7 +522,13 @@ namespace O365_Win_Snippets
 
                 return true;
             }
-            catch { return false; }
+            catch (ODataErrorException ex)
+            {
+                // GetById will throw an ODataErrorException when the 
+                // item with the specified Id can't be found in the contact store on the server. 
+                Debug.WriteLine(ex.Message);
+                return false;
+            }
         }
 
         public static async Task<bool> MoveMailFolderAsync(string folderId, string ToFolderName)
@@ -522,13 +537,19 @@ namespace O365_Win_Snippets
             {
                 OutlookServicesClient outlookClient = await GetOutlookClientAsync();
 
-                IFolder folderToMove = await outlookClient.Me.Folders[folderId].ExecuteAsync();
+                IFolder folderToMove = await outlookClient.Me.Folders.GetById(folderId).ExecuteAsync();
                 await folderToMove.MoveAsync(ToFolderName);
                 Debug.WriteLine("Moved folder: " + folderId + " to " + ToFolderName);
 
                 return true;
             }
-            catch { return false; }
+            catch (ODataErrorException ex)
+            {
+                // GetById will throw an ODataErrorException when the 
+                // item with the specified Id can't be found in the contact store on the server. 
+                Debug.WriteLine(ex.Message);
+                return false;
+            }
         }
 
         public static async Task<string> CopyMailFolderAsync(string folderId, string ToFolderName)
@@ -537,31 +558,43 @@ namespace O365_Win_Snippets
             {
                 OutlookServicesClient outlookClient = await GetOutlookClientAsync();
 
-                IFolder folderToCopy = await outlookClient.Me.Folders[folderId].ExecuteAsync();
+                IFolder folderToCopy = await outlookClient.Me.Folders.GetById(folderId).ExecuteAsync();
                 IFolder copiedFolder = await folderToCopy.CopyAsync(ToFolderName);
 
                 Debug.WriteLine("Copied folder: " + folderId + " to " + ToFolderName);
 
                 return copiedFolder.Id;
             }
-            catch { return null; }
+            catch (ODataErrorException ex)
+            {
+                // GetById will throw an ODataErrorException when the 
+                // item with the specified Id can't be found in the contact store on the server. 
+                Debug.WriteLine(ex.Message);
+                return null;
+            }
         }
 
 
-        public static  async Task<bool> DeleteMailFolderAsync(string folderId)
+        public static async Task<bool> DeleteMailFolderAsync(string folderId)
         {
             try
             {
                 OutlookServicesClient outlookClient = await GetOutlookClientAsync();
 
-                IFolder folder = await outlookClient.Me.Folders[folderId].ExecuteAsync();
+                IFolder folder = await outlookClient.Me.Folders.GetById(folderId).ExecuteAsync();
                 await folder.DeleteAsync();
 
                 Debug.WriteLine("Deleted folder: " + folderId);
 
                 return true;
             }
-            catch { return false; }
+            catch (ODataErrorException ex)
+            {
+                // GetById will throw an ODataErrorException when the 
+                // item with the specified Id can't be found in the contact store on the server. 
+                Debug.WriteLine(ex.Message);
+                return false;
+            }
         }
 
     }

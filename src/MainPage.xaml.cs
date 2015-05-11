@@ -117,20 +117,30 @@ namespace O365_Win_Snippets
         private async Task runSelectedAsync()
         {
             ResetStories();
+            Stopwatch sw = new Stopwatch();
 
             foreach (var story in StoryGrid.SelectedItems)
             {
                 StoryDefinition currentStory = story as StoryDefinition;
                 currentStory.IsRunning = true;
-                Stopwatch sw = new Stopwatch();
-                sw.Start();
-                currentStory.Result = await currentStory.RunStoryAsync();
+                sw.Restart();
+                bool result = false;
+                try
+                {
+                    result = await currentStory.RunStoryAsync();
+                    Debug.WriteLine(String.Format("{0}.{1} {2}", currentStory.GroupName, currentStory.Title, (result) ? "passed" : "failed"));
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("{0}.{1} failed. Exception: {2}", currentStory.GroupName, currentStory.Title, ex.Message);
+                    result = false;
+
+                }
+                currentStory.Result = result;
                 sw.Stop();
                 currentStory.DurationMS = sw.ElapsedMilliseconds;
                 currentStory.IsRunning = false;
 
-
-                Debug.WriteLine(String.Format("{0} {1}", currentStory.Title, (currentStory.Result.HasValue && currentStory.Result.Value) ? "passed" : "failed"));
 
             }
 

@@ -10,13 +10,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-//Snippets in this file:
-//
-//GetGraphClientAsync
-//GetUsersAsync
-//GetTenantDetailsAsync
-//GetGroupsAsync
-
 
 namespace O365_Win_Snippets
 {
@@ -93,55 +86,48 @@ namespace O365_Win_Snippets
 
         public static async Task<List<IUser>> GetUsersAsync()
         {
-            try
-            {
-                var client = await GetGraphClientAsync();
 
-                var users = await client.Users.ExecuteAsync();
+            var client = await GetGraphClientAsync();
 
-                Debug.WriteLine("First user in collection: " + users.CurrentPage[0].DisplayName);
+            var users = await client.Users.ExecuteAsync();
 
-                return users.CurrentPage.ToList();
-            }
-            catch { return null; }
+            Debug.WriteLine("First user in collection: " + users.CurrentPage[0].DisplayName);
+
+            return users.CurrentPage.ToList();
+
 
         }
 
         public static async Task<ITenantDetail> GetTenantDetailsAsync()
         {
-            try
-            {
-                var client = await GetGraphClientAsync();
 
-                var tenantDetails = await client.TenantDetails.ExecuteAsync();
+            var client = await GetGraphClientAsync();
 
-                Debug.WriteLine("Got tenant details.");
+            var tenantDetails = await client.TenantDetails.ExecuteAsync();
 
-                return tenantDetails.CurrentPage.First();
-            }
-            catch { return null; }
+            Debug.WriteLine("Got tenant details.");
+
+            return tenantDetails.CurrentPage.First();
+
 
         }
 
         public static async Task<List<IGroup>> GetGroupsAsync()
         {
-            try
+
+            var client = await GetGraphClientAsync();
+
+            var groups = await client.Groups.ExecuteAsync();
+
+            if (groups.CurrentPage.Count == 0)
             {
-                var client = await GetGraphClientAsync();
-
-                var groups = await client.Groups.ExecuteAsync();
-
-                if (groups.CurrentPage.Count == 0)
-                {
-                    Debug.WriteLine("No groups.");
-                    return new List<IGroup>(); 
-                }
-
-                Debug.WriteLine("First group in collection: " + groups.CurrentPage[0].DisplayName);
-
-                return groups.CurrentPage.ToList();
+                Debug.WriteLine("No groups.");
+                return new List<IGroup>();
             }
-            catch { return null; }
+
+            Debug.WriteLine("First group in collection: " + groups.CurrentPage[0].DisplayName);
+
+            return groups.CurrentPage.ToList();
 
         }
 
