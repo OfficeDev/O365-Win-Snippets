@@ -2,6 +2,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
@@ -40,397 +42,337 @@ namespace O365_Win_Snippets
         public static async Task<bool> TrySendMessageAsync()
         {
 
-            try
-            {
+            bool isSent = await EmailSnippets.SendMessageAsync(
+            STORY_DATA_IDENTIFIER,
+            DEFAULT_MESSAGE_BODY,
+            AuthenticationHelper.LoggedInUserEmail
+            );
 
-                 bool isSent= await EmailSnippets.SendMessageAsync(
-                    STORY_DATA_IDENTIFIER,
-                    DEFAULT_MESSAGE_BODY,
-                    AuthenticationHelper.LoggedInUserEmail
-                    );
-
-                 return isSent;
-
-            }
-
-            catch { return false; }
-
+            return isSent;
 
         }
 
         public static async Task<bool> TryCreateDraftAsync()
         {
-            try
-            {
-                // Create the draft message.
-                var newMessageId = await EmailSnippets.CreateDraftAsync(
-                        STORY_DATA_IDENTIFIER,
-                        DEFAULT_MESSAGE_BODY,
-                        AuthenticationHelper.LoggedInUserEmail
-                    );
 
-                if (newMessageId == null)
-                    return false;
+            // Create the draft message.
+            var newMessageId = await EmailSnippets.CreateDraftAsync(
+                    STORY_DATA_IDENTIFIER,
+                    DEFAULT_MESSAGE_BODY,
+                    AuthenticationHelper.LoggedInUserEmail
+                );
 
-                //Cleanup
-                await EmailSnippets.DeleteMessageAsync(newMessageId);
+            if (newMessageId == null)
+                return false;
 
-                    return true;
-                
-            }
+            //Cleanup
+            await EmailSnippets.DeleteMessageAsync(newMessageId);
 
-            catch { return false; }
+            return true;
+
         }
 
         public static async Task<bool> TryReplyMessageAsync()
         {
 
-            try
-            {
-                // Create a draft message and then send it. If you send the message without first creating a draft, you can't easily retrieve 
-                // the message Id.
+            // Create a draft message and then send it. If you send the message without first creating a draft, you can't easily retrieve 
+            // the message Id.
 
-                var newMessageId = await EmailSnippets.CreateDraftAndSendAsync(
-                        STORY_DATA_IDENTIFIER,
-                        DEFAULT_MESSAGE_BODY,
-                        AuthenticationHelper.LoggedInUserEmail
-                    );
+            var newMessageId = await EmailSnippets.CreateDraftAndSendAsync(
+                    STORY_DATA_IDENTIFIER,
+                    DEFAULT_MESSAGE_BODY,
+                    AuthenticationHelper.LoggedInUserEmail
+                );
 
-                if (newMessageId == null)
-                    return false;
+            if (newMessageId == null)
+                return false;
 
-                // Find the sent message.
-                var sentMessageId = await GetSentMessageIdAsync();
-                if (String.IsNullOrEmpty(sentMessageId))
-                    return false;
+            // Find the sent message.
+            var sentMessageId = await GetSentMessageIdAsync();
+            if (String.IsNullOrEmpty(sentMessageId))
+                return false;
 
-                // Reply to the message.
-                bool isReplied = await EmailSnippets.ReplyMessageAsync(
-                    sentMessageId,
-                    DEFAULT_MESSAGE_BODY);
+            // Reply to the message.
+            bool isReplied = await EmailSnippets.ReplyMessageAsync(
+                sentMessageId,
+                DEFAULT_MESSAGE_BODY);
 
-                return isReplied;
-
-            }
-            catch { return false; }
+            return isReplied;
         }
 
         public static async Task<bool> TryReplyAllAsync()
         {
 
-            try
-            {
-                // Create a draft message and then send it. If you send the message without first creating a draft, you can't easily retrieve 
-                // the message Id.
+            // Create a draft message and then send it. If you send the message without first creating a draft, you can't easily retrieve 
+            // the message Id.
 
-                var newMessageId = await EmailSnippets.CreateDraftAndSendAsync(
-                        STORY_DATA_IDENTIFIER,
-                        DEFAULT_MESSAGE_BODY,
-                        AuthenticationHelper.LoggedInUserEmail
-                    );
+            var newMessageId = await EmailSnippets.CreateDraftAndSendAsync(
+                    STORY_DATA_IDENTIFIER,
+                    DEFAULT_MESSAGE_BODY,
+                    AuthenticationHelper.LoggedInUserEmail
+                );
 
-                if (newMessageId == null)
-                    return false;
+            if (newMessageId == null)
+                return false;
 
 
-                // Find the sent message.
-                var sentMessageId = await GetSentMessageIdAsync();
-                if (String.IsNullOrEmpty(sentMessageId))
-                    return false;
+            // Find the sent message.
+            var sentMessageId = await GetSentMessageIdAsync();
+            if (String.IsNullOrEmpty(sentMessageId))
+                return false;
 
-                // Reply to the message.
-                bool isReplied = await EmailSnippets.ReplyAllAsync(
-                                sentMessageId,
-                                DEFAULT_MESSAGE_BODY);
+            // Reply to the message.
+            bool isReplied = await EmailSnippets.ReplyAllAsync(
+                            sentMessageId,
+                            DEFAULT_MESSAGE_BODY);
 
-                return isReplied;
+            return isReplied;
 
-            }
-            catch { return false; }
         }
 
         public static async Task<bool> TryForwardMessageAsync()
         {
 
-            try
-            {
-                // Create a draft message and then send it. If you send the message without first creating a draft, you can't easily retrieve 
-                // the message Id.
+            // Create a draft message and then send it. If you send the message without first creating a draft, you can't easily retrieve 
+            // the message Id.
 
-                var newMessageId = await EmailSnippets.CreateDraftAndSendAsync(
-                        STORY_DATA_IDENTIFIER,
-                        DEFAULT_MESSAGE_BODY,
-                        AuthenticationHelper.LoggedInUserEmail
-                    );
+            var newMessageId = await EmailSnippets.CreateDraftAndSendAsync(
+                    STORY_DATA_IDENTIFIER,
+                    DEFAULT_MESSAGE_BODY,
+                    AuthenticationHelper.LoggedInUserEmail
+                );
 
-                if (newMessageId == null)
-                    return false;
+            if (newMessageId == null)
+                return false;
 
-                // Find the sent message.
-                var sentMessageId = await GetSentMessageIdAsync();
-                if (String.IsNullOrEmpty(sentMessageId))
-                    return false;
+            // Find the sent message.
+            var sentMessageId = await GetSentMessageIdAsync();
+            if (String.IsNullOrEmpty(sentMessageId))
+                return false;
 
-                // Reply to the message.
-                bool isReplied = await EmailSnippets.ForwardMessageAsync(
-                               sentMessageId,
-                               DEFAULT_MESSAGE_BODY,
-                               AuthenticationHelper.LoggedInUserEmail);
+            // Reply to the message.
+            bool isReplied = await EmailSnippets.ForwardMessageAsync(
+                            sentMessageId,
+                            DEFAULT_MESSAGE_BODY,
+                            AuthenticationHelper.LoggedInUserEmail);
 
-                return isReplied;
+            return isReplied;
 
-            }
-            catch { return false; }
         }
 
         public static async Task<bool> TryUpdateMessageAsync()
         {
 
-            try
-            {
-                // Create a draft message. If you send the message without first creating a draft, you can't easily retrieve the message Id.
-                var newMessageId = await EmailSnippets.CreateDraftAsync(
-                        STORY_DATA_IDENTIFIER,
-                        DEFAULT_MESSAGE_BODY,
-                        AuthenticationHelper.LoggedInUserEmail
-                    );
+            // Create a draft message. If you send the message without first creating a draft, you can't easily retrieve the message Id.
+            var newMessageId = await EmailSnippets.CreateDraftAsync(
+                    STORY_DATA_IDENTIFIER,
+                    DEFAULT_MESSAGE_BODY,
+                    AuthenticationHelper.LoggedInUserEmail
+                );
 
-                if (newMessageId == null)
-                    return false;
+            if (newMessageId == null)
+                return false;
 
-                // Update the message.
-                bool isUpdated = await EmailSnippets.UpdateMessageAsync(
-                    newMessageId,
-                    DEFAULT_MESSAGE_BODY);
+            // Update the message.
+            bool isUpdated = await EmailSnippets.UpdateMessageAsync(
+                newMessageId,
+                DEFAULT_MESSAGE_BODY);
 
-                //Cleanup. Comment if you want to verify the update in your Drafts folder.
-                await EmailSnippets.DeleteMessageAsync(newMessageId);
+            //Cleanup. Comment if you want to verify the update in your Drafts folder.
+            await EmailSnippets.DeleteMessageAsync(newMessageId);
 
-                return isUpdated;
-            }
-            catch { return false; }
+            return isUpdated;
+
         }
 
         public static async Task<bool> TryMoveMessageAsync()
         {
 
-            try
-            {
-                // Create a draft message and then send it. If you send the message without first creating a draft, you can't easily retrieve 
-                // the message Id.
+            // Create a draft message and then send it. If you send the message without first creating a draft, you can't easily retrieve 
+            // the message Id.
 
-                var newMessageId = await EmailSnippets.CreateDraftAndSendAsync(
-                        STORY_DATA_IDENTIFIER,
-                        DEFAULT_MESSAGE_BODY,
-                        AuthenticationHelper.LoggedInUserEmail
-                    );
+            var newMessageId = await EmailSnippets.CreateDraftAndSendAsync(
+                    STORY_DATA_IDENTIFIER,
+                    DEFAULT_MESSAGE_BODY,
+                    AuthenticationHelper.LoggedInUserEmail
+                );
 
-                if (newMessageId == null)
-                    return false;
+            if (newMessageId == null)
+                return false;
 
-                // Find the sent message.
-                var sentMessageId = await GetSentMessageIdAsync();
-                if (String.IsNullOrEmpty(sentMessageId))
-                    return false;
+            // Find the sent message.
+            var sentMessageId = await GetSentMessageIdAsync();
+            if (String.IsNullOrEmpty(sentMessageId))
+                return false;
 
-                // Reply to the message.
-                bool isReplied = await EmailSnippets.MoveMessageAsync(
-                                sentMessageId,
-                                "Inbox",
-                                "Drafts");
+            // Reply to the message.
+            bool isReplied = await EmailSnippets.MoveMessageAsync(
+                            sentMessageId,
+                            "Inbox",
+                            "Drafts");
 
-                return isReplied;
+            return isReplied;
 
-            }
-            catch { return false; }
         }
 
         public static async Task<bool> TryCopyMessageAsync()
         {
 
-            try
-            {
-                // Create a draft message and then send it. If you send the message without first creating a draft, you can't easily retrieve 
-                // the message Id.
+            // Create a draft message and then send it. If you send the message without first creating a draft, you can't easily retrieve 
+            // the message Id.
 
-                var newMessageId = await EmailSnippets.CreateDraftAndSendAsync(
-                        STORY_DATA_IDENTIFIER,
-                        DEFAULT_MESSAGE_BODY,
-                        AuthenticationHelper.LoggedInUserEmail
-                    );
+            var newMessageId = await EmailSnippets.CreateDraftAndSendAsync(
+                    STORY_DATA_IDENTIFIER,
+                    DEFAULT_MESSAGE_BODY,
+                    AuthenticationHelper.LoggedInUserEmail
+                );
 
-                if (newMessageId == null)
-                    return false;
-                // Find the sent message.
-                var sentMessageId = await GetSentMessageIdAsync();
-                if (String.IsNullOrEmpty(sentMessageId))
-                    return false;
+            if (newMessageId == null)
+                return false;
+            // Find the sent message.
+            var sentMessageId = await GetSentMessageIdAsync();
+            if (String.IsNullOrEmpty(sentMessageId))
+                return false;
 
-                // Reply to the message.
-                bool isReplied = await EmailSnippets.CopyMessageAsync(
-                                sentMessageId,
-                                "Inbox",
-                                "Drafts");
+            // Reply to the message.
+            bool isReplied = await EmailSnippets.CopyMessageAsync(
+                            sentMessageId,
+                            "Inbox",
+                            "Drafts");
 
-                return isReplied;
+            return isReplied;
 
-            }
-            catch { return false; }
         }
 
         public static async Task<bool> TryDeleteMessageAsync()
         {
 
-            try
-            {
-                // Create a draft message. If you send the message without first creating a draft, you can't easily retrieve the message Id.
-                var newMessageId = await EmailSnippets.CreateDraftAsync(
-                        STORY_DATA_IDENTIFIER,
-                        DEFAULT_MESSAGE_BODY,
-                        AuthenticationHelper.LoggedInUserEmail
-                    );
+            // Create a draft message. If you send the message without first creating a draft, you can't easily retrieve the message Id.
+            var newMessageId = await EmailSnippets.CreateDraftAsync(
+                    STORY_DATA_IDENTIFIER,
+                    DEFAULT_MESSAGE_BODY,
+                    AuthenticationHelper.LoggedInUserEmail
+                );
 
-                if (newMessageId == null)
-                    return false;
+            if (newMessageId == null)
+                return false;
 
-                // Delete the message.
-                var isDeleted = await EmailSnippets.DeleteMessageAsync(newMessageId);
+            // Delete the message.
+            var isDeleted = await EmailSnippets.DeleteMessageAsync(newMessageId);
 
-                return isDeleted;
-            }
-            catch { return false; }
+            return isDeleted;
+
         }
 
         public static async Task<bool> TryGetMailFoldersAsync()
         {
-            try
+
+            // The example gets the Inbox and its siblings.
+            var foldersResults = await EmailSnippets.GetMailFoldersAsync();
+
+            foreach (var folder in foldersResults.CurrentPage)
             {
-                // The example gets the Inbox and its siblings.
-                var foldersResults = await EmailSnippets.GetMailFoldersAsync();
-
-                foreach (var folder in foldersResults.CurrentPage)
-                {
-                    if ((folder.DisplayName == "Inbox")
-                        || (folder.DisplayName == "Drafts")
-                        || (folder.DisplayName == "DeletedItems")
-                        || (folder.DisplayName == "SentItems"))
-                        return true;
-                }
-
-                return false;
-
+                if ((folder.DisplayName == "Inbox")
+                    || (folder.DisplayName == "Drafts")
+                    || (folder.DisplayName == "DeletedItems")
+                    || (folder.DisplayName == "SentItems"))
+                    return true;
             }
-            catch { return false; }
+
+            return false;
+
         }
 
         public static async Task<bool> TryCreateMailFolderAsync()
         {
-            try
+
+            var folderId = await EmailSnippets.CreateMailFolderAsync("Inbox", "FolderToDelete");
+
+
+            if (!string.IsNullOrEmpty(folderId))
             {
-                var folderId = await EmailSnippets.CreateMailFolderAsync("Inbox", "FolderToDelete");
+                //Cleanup
+                await EmailSnippets.DeleteMailFolderAsync(folderId);
 
-
-                if (!string.IsNullOrEmpty(folderId))
-                {
-                    //Cleanup
-                    await EmailSnippets.DeleteMailFolderAsync(folderId);
-
-                    return true;
-                }
-
-                return false;
+                return true;
             }
 
-            catch { return false; }
+            return false;
         }
 
         public static async Task<bool> TryUpdateMailFolderAsync()
         {
-            try
+
+            var folderId = await EmailSnippets.CreateMailFolderAsync("Inbox", "FolderToUpdateAndDelete");
+
+
+            if (!string.IsNullOrEmpty(folderId))
             {
-                var folderId = await EmailSnippets.CreateMailFolderAsync("Inbox", "FolderToUpdateAndDelete");
 
+                bool isFolderUpdated = await EmailSnippets.UpdateMailFolderAsync(folderId, "FolderToDelete");
 
-                if (!string.IsNullOrEmpty(folderId))
-                {
+                //Cleanup
+                await EmailSnippets.DeleteMailFolderAsync(folderId);
 
-                    bool isFolderUpdated = await EmailSnippets.UpdateMailFolderAsync(folderId, "FolderToDelete");
-
-                    //Cleanup
-                    await EmailSnippets.DeleteMailFolderAsync(folderId);
-
-                    return isFolderUpdated;
-                }
-
-                return false;
+                return isFolderUpdated;
             }
 
-            catch { return false; }
+            return false;
         }
 
         public static async Task<bool> TryMoveMailFolderAsync()
         {
-            try
+
+            var folderId = await EmailSnippets.CreateMailFolderAsync("Inbox", "FolderToDelete");
+
+
+            if (!string.IsNullOrEmpty(folderId))
             {
-                var folderId = await EmailSnippets.CreateMailFolderAsync("Inbox", "FolderToDelete");
 
+                bool isFolderMoved = await EmailSnippets.MoveMailFolderAsync(folderId, "Drafts");
 
-                if (!string.IsNullOrEmpty(folderId))
-                {
+                //Cleanup
+                await EmailSnippets.DeleteMailFolderAsync(folderId);
 
-                    bool isFolderMoved = await EmailSnippets.MoveMailFolderAsync(folderId, "Drafts");
-
-                    //Cleanup
-                    await EmailSnippets.DeleteMailFolderAsync(folderId);
-
-                    return isFolderMoved;
-                }
-
-                return false;
+                return isFolderMoved;
             }
 
-            catch { return false; }
+            return false;
+
         }
 
         public static async Task<bool> TryCopyMailFolderAsync()
         {
-            try
+
+            var folderId = await EmailSnippets.CreateMailFolderAsync("Inbox", "FolderToCopyAndDelete");
+
+
+            if (!string.IsNullOrEmpty(folderId))
             {
-                var folderId = await EmailSnippets.CreateMailFolderAsync("Inbox", "FolderToCopyAndDelete");
 
+                string copiedFolderId = await EmailSnippets.CopyMailFolderAsync(folderId, "Drafts");
 
-                if (!string.IsNullOrEmpty(folderId))
+                if (!string.IsNullOrEmpty(copiedFolderId))
                 {
 
-                    string copiedFolderId = await EmailSnippets.CopyMailFolderAsync(folderId, "Drafts");
+                    //Cleanup
+                    await EmailSnippets.DeleteMailFolderAsync(folderId);
+                    await EmailSnippets.DeleteMailFolderAsync(copiedFolderId);
 
-                    if (!string.IsNullOrEmpty(copiedFolderId))
-                    {
-
-                        //Cleanup
-                        await EmailSnippets.DeleteMailFolderAsync(folderId);
-                        await EmailSnippets.DeleteMailFolderAsync(copiedFolderId);
-
-                        return true;
-                    }
+                    return true;
                 }
-
-                return false;
             }
 
-            catch { return false; }
+            return false;
         }
 
         public static async Task<bool> TryDeleteMailFolderAsync()
         {
-            try
-            {
-                var folderId = await EmailSnippets.CreateMailFolderAsync("Inbox", "FolderToDelete");
 
-                var isFolderDeleted = await EmailSnippets.DeleteMailFolderAsync(folderId);
-                return isFolderDeleted;
-            }
-            catch { return false; }
+            var folderId = await EmailSnippets.CreateMailFolderAsync("Inbox", "FolderToDelete");
+
+            var isFolderDeleted = await EmailSnippets.DeleteMailFolderAsync(folderId);
+            return isFolderDeleted;
         }
 
         private static async Task<string> GetSentMessageIdAsync()

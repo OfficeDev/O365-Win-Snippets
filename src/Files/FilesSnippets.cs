@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. See full license at the bottom of this file.
 
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
+using Microsoft.OData.Core;
 using Microsoft.Office365.Discovery;
 using Microsoft.Office365.SharePoint.CoreServices;
 using Microsoft.Office365.SharePoint.FileServices;
@@ -12,18 +13,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-//Snippets in this file:
-//
-//GetSharePointClientAsync
-//CreateFileAsync
-//UpdateFileContentAsync
-//DownloadFileAsync
-//DeleteFileAsync
-//CopyFileAsync
-//RenameFileAsync
-//GetFolderChildrenAsync
-//CreateFolderAsync
-//DeleteFolderAsync
 
 namespace O365_Win_Snippets
 {
@@ -115,24 +104,21 @@ namespace O365_Win_Snippets
 
         public static async Task<string> CreateFileAsync(string fileName, Stream fileContent)
         {
-            try
+
+            var sharePointClient = await GetSharePointClientAsync();
+
+            File newFile = new File
             {
-                var sharePointClient = await GetSharePointClientAsync();
+                Name = fileName
+            };
 
-                File newFile = new File
-                {
-                    Name = fileName
-                };
+            await sharePointClient.Files.AddItemAsync(newFile);
+            await sharePointClient.Files.GetById(newFile.Id).ToFile().UploadAsync(fileContent);
 
-                await sharePointClient.Files.AddItemAsync(newFile);
-                await sharePointClient.Files.GetById(newFile.Id).ToFile().UploadAsync(fileContent);
+            Debug.WriteLine("Created a file: " + newFile.Id);
 
-                Debug.WriteLine("Created a file: " + newFile.Id);
+            return newFile.Id;
 
-                return newFile.Id;
-
-            }
-            catch { return null; }
         }
 
         public static async Task<bool> UpdateFileContentAsync(string Id, Stream fileContent)
@@ -149,7 +135,13 @@ namespace O365_Win_Snippets
                 return true;
 
             }
-            catch { return false; }
+            catch (ODataErrorException ex)
+            {
+                // GetById will throw an ODataErrorException when the 
+                // item with the specified Id can't be found in the contact store on the server. 
+                Debug.WriteLine(ex.Message);
+                return false;
+            }
         }
 
         public static async Task<Stream> DownloadFileAsync(string Id)
@@ -165,7 +157,13 @@ namespace O365_Win_Snippets
 
                 return stream;
             }
-            catch { return null; }
+            catch (ODataErrorException ex)
+            {
+                // GetById will throw an ODataErrorException when the 
+                // item with the specified Id can't be found in the contact store on the server. 
+                Debug.WriteLine(ex.Message);
+                return null;
+            }
         }
 
         public static async Task<bool> DeleteFileAsync(string Id)
@@ -180,7 +178,13 @@ namespace O365_Win_Snippets
 
                 return true;
             }
-            catch { return false; }
+            catch (ODataErrorException ex)
+            {
+                // GetById will throw an ODataErrorException when the 
+                // item with the specified Id can't be found in the contact store on the server. 
+                Debug.WriteLine(ex.Message);
+                return false;
+            }
         }
 
         public static async Task<string> CopyFileAsync(string fileId, string destinationFolderId)
@@ -195,8 +199,11 @@ namespace O365_Win_Snippets
 
                 return copiedFile.Id;
             }
-            catch
+            catch (ODataErrorException ex)
             {
+                // GetById will throw an ODataErrorException when the 
+                // item with the specified Id can't be found in the contact store on the server. 
+                Debug.WriteLine(ex.Message);
                 return null;
             }
         }
@@ -217,7 +224,13 @@ namespace O365_Win_Snippets
 
                 return file.Name;
             }
-            catch { return null; }
+            catch (ODataErrorException ex)
+            {
+                // GetById will throw an ODataErrorException when the 
+                // item with the specified Id can't be found in the contact store on the server. 
+                Debug.WriteLine(ex.Message);
+                return null;
+            }
         }
 
         //Folders operations
@@ -232,7 +245,13 @@ namespace O365_Win_Snippets
 
                 return items.CurrentPage.ToList();
             }
-            catch { return null; }
+            catch (ODataErrorException ex)
+            {
+                // GetById will throw an ODataErrorException when the 
+                // item with the specified Id can't be found in the contact store on the server. 
+                Debug.WriteLine(ex.Message);
+                return null;
+            }
         }
 
         public static async Task<Folder> CreateFolderAsync(string folderName, string parentFolderId)
@@ -252,7 +271,13 @@ namespace O365_Win_Snippets
 
                 return (Folder)newItem;
             }
-            catch { return null; }
+            catch (ODataErrorException ex)
+            {
+                // GetById will throw an ODataErrorException when the 
+                // item with the specified Id can't be found in the contact store on the server. 
+                Debug.WriteLine(ex.Message);
+                return null;
+            }
         }
 
 
@@ -268,7 +293,13 @@ namespace O365_Win_Snippets
                 return true;
 
             }
-            catch { return false; }
+            catch (ODataErrorException ex)
+            {
+                // GetById will throw an ODataErrorException when the 
+                // item with the specified Id can't be found in the contact store on the server. 
+                Debug.WriteLine(ex.Message);
+                return false;
+            }
         }
 
     }

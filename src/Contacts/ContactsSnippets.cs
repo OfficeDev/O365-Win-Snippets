@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. See full license at the bottom of this file.
 
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
+using Microsoft.OData.Core;
 using Microsoft.Office365.Discovery;
 using Microsoft.Office365.OutlookServices;
 using System;
@@ -9,14 +10,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-//Snippets in this file:
-//GetOutlookClientAsync
-//GetContactsPageAsync
-//GetContactAsync
-//AddContactItemAsync
-//UpdateContactItemAsync
-//DeleteContactAsync
 
 
 namespace O365_Win_Snippets
@@ -113,29 +106,24 @@ namespace O365_Win_Snippets
         /// <returns>A list of contacts.</returns>
         public static async Task<List<IContact>> GetContactsPageAsync()
         {
-            try
+            // Get exchangeclient
+            var outlookClient = await GetOutlookClientAsync();
+
+            // Get contacts
+            var contactsResults = await outlookClient.Me.Contacts.ExecuteAsync();
+
+            // You can access each contact as follows.
+            if (contactsResults.CurrentPage.Count > 0)
             {
-                // Get exchangeclient
-                var outlookClient = await GetOutlookClientAsync();
+                string contactId = contactsResults.CurrentPage[0].Id;
 
-                // Get contacts
-                var contactsResults = await outlookClient.Me.Contacts.ExecuteAsync();
-
-                // You can access each contact as follows.
                 if (contactsResults.CurrentPage.Count > 0)
                 {
-                    string contactId = contactsResults.CurrentPage[0].Id;
-
-                    if ( contactsResults.CurrentPage.Count > 0)
-                    {
-                        Debug.WriteLine("First contact:" + contactId);
-                    }
+                    Debug.WriteLine("First contact:" + contactId);
                 }
-
-                return contactsResults.CurrentPage.ToList();
             }
 
-            catch { return null; }
+            return contactsResults.CurrentPage.ToList();
         }
 
         public static async Task<IContact> GetContactAsync(string Id)
@@ -149,7 +137,13 @@ namespace O365_Win_Snippets
 
                 return contact;
             }
-            catch { return null; }
+            catch (ODataErrorException ex)
+            {
+                // GetById will throw an ODataErrorException when the 
+                // item with the specified Id can't be found in the contact store on the server. 
+                Debug.WriteLine(ex.Message);
+                return null;
+            }
         }
 
         /// <summary>
@@ -184,19 +178,16 @@ namespace O365_Win_Snippets
             if (!string.IsNullOrEmpty(email))
                 newContact.EmailAddresses.Add(new EmailAddress() { Address = email });
 
-            try
-            {
-                // Make sure we have a reference to the Exchange client
-                var outlookClient = await GetOutlookClientAsync();
+            // Make sure we have a reference to the Exchange client
+            var outlookClient = await GetOutlookClientAsync();
 
-                // This results in a call to the service.
-                await outlookClient.Me.Contacts.AddContactAsync(newContact);
+            // This results in a call to the service.
+            await outlookClient.Me.Contacts.AddContactAsync(newContact);
 
-                Debug.WriteLine("Added contact: " + newContact.Id);
+            Debug.WriteLine("Added contact: " + newContact.Id);
 
-                return newContact;
-            }
-            catch { return null; }
+            return newContact;
+
         }
 
         /// <summary>
@@ -214,47 +205,44 @@ namespace O365_Win_Snippets
            )
         {
 
-            try
+            // Make sure we have a reference to the Exchange client
+            var exchangeClient = await GetOutlookClientAsync();
+
+            var contactToUpdate = await exchangeClient.Me.Contacts[selectedContactId].ExecuteAsync();
+
+            contactToUpdate.FileAs = fileAs;
+            contactToUpdate.GivenName = givenName;
+            contactToUpdate.Surname = surname;
+            contactToUpdate.JobTitle = jobTitle;
+
+            contactToUpdate.MobilePhone1 = mobilePhone;
+
+            // Note: Setting EmailAddress1 to a null or empty string will throw an exception that
+            // states the email address is invalid and the contact cannot be added.
+            // Setting EmailAddress1 to a string that does not resemble an email address will not
+            // cause an exception to be thrown, but the value is not stored in EmailAddress1.
+
+            if (!string.IsNullOrEmpty(email))
             {
-                // Make sure we have a reference to the Exchange client
-                var exchangeClient = await GetOutlookClientAsync();
-
-                var contactToUpdate = await exchangeClient.Me.Contacts[selectedContactId].ExecuteAsync();
-
-                contactToUpdate.FileAs = fileAs;
-                contactToUpdate.GivenName = givenName;
-                contactToUpdate.Surname = surname;
-                contactToUpdate.JobTitle = jobTitle;
-
-                contactToUpdate.MobilePhone1 = mobilePhone;
-
-                // Note: Setting EmailAddress1 to a null or empty string will throw an exception that
-                // states the email address is invalid and the contact cannot be added.
-                // Setting EmailAddress1 to a string that does not resemble an email address will not
-                // cause an exception to be thrown, but the value is not stored in EmailAddress1.
-
-                if (!string.IsNullOrEmpty(email))
-                {
-                    contactToUpdate.EmailAddresses.Clear();
-                    contactToUpdate.EmailAddresses.Add(new EmailAddress() { Address = email, Name = email });
-                }
-
-                // Update the contact in Exchange
-                await contactToUpdate.UpdateAsync();
-
-                Debug.WriteLine("Updated contact: " + contactToUpdate.Id);
-
-                return contactToUpdate;
-
-                // A note about Batch Updating
-                // You can save multiple updates on the client and save them all at once (batch) by 
-                // implementing the following pattern:
-                // 1. Call UpdateAsync(true) for each contact you want to update. Setting the parameter dontSave to true 
-                //    means that the updates are registered locally on the client, but won't be posted to the server.
-                // 2. Call exchangeClient.Context.SaveChangesAsync() to post all contact updates you have saved locally  
-                //    using the preceding UpdateAsync(true) call to the server, i.e., the user's Office 365 contacts list.
+                contactToUpdate.EmailAddresses.Clear();
+                contactToUpdate.EmailAddresses.Add(new EmailAddress() { Address = email, Name = email });
             }
-            catch { return null; }
+
+            // Update the contact in Exchange
+            await contactToUpdate.UpdateAsync();
+
+            Debug.WriteLine("Updated contact: " + contactToUpdate.Id);
+
+            return contactToUpdate;
+
+            // A note about Batch Updating
+            // You can save multiple updates on the client and save them all at once (batch) by 
+            // implementing the following pattern:
+            // 1. Call UpdateAsync(true) for each contact you want to update. Setting the parameter dontSave to true 
+            //    means that the updates are registered locally on the client, but won't be posted to the server.
+            // 2. Call exchangeClient.Context.SaveChangesAsync() to post all contact updates you have saved locally  
+            //    using the preceding UpdateAsync(true) call to the server, i.e., the user's Office 365 contacts list.
+
         }
 
         /// <summary>
@@ -269,7 +257,7 @@ namespace O365_Win_Snippets
                 // Make sure we have a reference to the Exchange client
                 var outlookClient = await GetOutlookClientAsync();
 
-                var contactToDelete = await outlookClient.Me.Contacts[contactId].ExecuteAsync();
+                var contactToDelete = await outlookClient.Me.Contacts.GetById(contactId).ExecuteAsync();
 
                 await contactToDelete.DeleteAsync();
 
@@ -277,7 +265,13 @@ namespace O365_Win_Snippets
 
                 return true;
             }
-            catch { return false; }
+            catch (ODataErrorException ex)
+            {
+                // GetById will throw an ODataErrorException when the 
+                // item with the specified Id can't be found in the contact store on the server. 
+                Debug.WriteLine(ex.Message);
+                return false;
+            }
         }
 
     }

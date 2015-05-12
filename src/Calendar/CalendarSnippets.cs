@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. See full license at the bottom of this file.
 
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
+using Microsoft.OData.Core;
 using Microsoft.Office365.Discovery;
 using Microsoft.Office365.OutlookServices;
 using Microsoft.Office365.OutlookServices.Extensions;
@@ -10,15 +11,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-//Snippets in this file:
-//
-//GetOutlookClientAsync
-//GetCalendarEventsAsync
-//AddCalendarEventAsync
-//AddCalendarEventWithArgsAsync
-//UpdateCalendarEventAsync
-//DeleteCalendarEventAsync
 
 namespace O365_Win_Snippets
 {
@@ -112,23 +104,21 @@ namespace O365_Win_Snippets
         /// <returns>A list of calendar events.</returns>
         public static async Task<List<IEvent>> GetCalendarEventsAsync()
         {
-            try
+
+            // Make sure we have a reference to the Exchange client
+            OutlookServicesClient client = await GetOutlookClientAsync();
+
+            IPagedCollection<IEvent> eventsResults = await client.Me.Calendar.Events.ExecuteAsync();
+
+            // You can access each event as follows.
+            if (eventsResults.CurrentPage.Count > 0)
             {
-                // Make sure we have a reference to the Exchange client
-                OutlookServicesClient client = await GetOutlookClientAsync();
-
-                IPagedCollection<IEvent> eventsResults = await client.Me.Calendar.Events.ExecuteAsync();
-
-                // You can access each event as follows.
-                if (eventsResults.CurrentPage.Count > 0)
-                {
-                    string eventId = eventsResults.CurrentPage[0].Id;
-                    Debug.WriteLine("First event:" + eventId);
-                }
-
-                return eventsResults.CurrentPage.ToList();
+                string eventId = eventsResults.CurrentPage[0].Id;
+                Debug.WriteLine("First event:" + eventId);
             }
-            catch { return null; }
+
+            return eventsResults.CurrentPage.ToList();
+
         }
 
         /// <summary>
@@ -136,52 +126,49 @@ namespace O365_Win_Snippets
         /// </summary>
         public static async Task<string> AddCalendarEventAsync()
         {
-            try
+
+            // Make sure we have a reference to the Exchange client
+            var client = await GetOutlookClientAsync();
+
+            Location location = new Location
             {
-                // Make sure we have a reference to the Exchange client
-                var client = await GetOutlookClientAsync();
-
-                Location location = new Location
-                {
-                    DisplayName = "Water cooler"
-                };
-                ItemBody body = new ItemBody
-                {
-                    Content = "Status updates, blocking issues, and next steps",
-                    ContentType = BodyType.Text
-                };
-
-                Attendee[] attendees =  
-            { 
-                new Attendee  
-                { 
-                    Type = AttendeeType.Required, 
-                    EmailAddress = new EmailAddress  
-                    { 
-                        Address = "mara@fabrikam.com" 
-                    }, 
-                }, 
+                DisplayName = "Water cooler"
+            };
+            ItemBody body = new ItemBody
+            {
+                Content = "Status updates, blocking issues, and next steps",
+                ContentType = BodyType.Text
             };
 
-                Event newEvent = new Event
-                {
-                    Subject = "Weekly Sync",
-                    Location = location,
-                    Attendees = attendees,
-                    Start = new DateTimeOffset(new DateTime(2014, 12, 1, 9, 30, 0)),
-                    End = new DateTimeOffset(new DateTime(2014, 12, 1, 10, 0, 0)),
-                    Body = body
-                };
+            Attendee[] attendees =  
+        { 
+            new Attendee  
+            { 
+                Type = AttendeeType.Required, 
+                EmailAddress = new EmailAddress  
+                { 
+                    Address = "mara@fabrikam.com" 
+                }, 
+            }, 
+        };
 
-                await client.Me.Calendar.Events.AddEventAsync(newEvent);
+            Event newEvent = new Event
+            {
+                Subject = "Weekly Sync",
+                Location = location,
+                Attendees = attendees,
+                Start = new DateTimeOffset(new DateTime(2014, 12, 1, 9, 30, 0)),
+                End = new DateTimeOffset(new DateTime(2014, 12, 1, 10, 0, 0)),
+                Body = body
+            };
 
-                // Get the ID of the event. 
-                string eventId = newEvent.Id;
+            await client.Me.Calendar.Events.AddEventAsync(newEvent);
 
-                Debug.WriteLine("Added event: " + eventId);
-                return eventId;
-            }
-            catch { return null; };
+            // Get the ID of the event. 
+            string eventId = newEvent.Id;
+
+            Debug.WriteLine("Added event: " + eventId);
+            return eventId;
 
 
         }
@@ -237,17 +224,14 @@ namespace O365_Win_Snippets
             newEvent.Start = (DateTimeOffset?)CalcNewTime(newEvent.Start, start, startTime);
             newEvent.End = (DateTimeOffset?)CalcNewTime(newEvent.End, end, endTime);
 
-            try
-            {
-                // Make sure we have a reference to the calendar client
-                var exchangeClient = await GetOutlookClientAsync();
+            // Make sure we have a reference to the calendar client
+            var exchangeClient = await GetOutlookClientAsync();
 
-                // This results in a call to the service.
-                await exchangeClient.Me.Events.AddEventAsync(newEvent);
-                Debug.WriteLine("Added event: " + newEvent.Id);
-                return newEvent.Id;
-            }
-            catch { return null; }
+            // This results in a call to the service.
+            await exchangeClient.Me.Events.AddEventAsync(newEvent);
+            Debug.WriteLine("Added event: " + newEvent.Id);
+            return newEvent.Id;
+
         }
 
 
@@ -300,24 +284,21 @@ namespace O365_Win_Snippets
             body.ContentType = BodyType.Text;
             body.Content = BodyContent;
             eventToUpdate.Body = body;
-            try
-            {
 
-                // Update the calendar event in Exchange
-                await eventToUpdate.UpdateAsync();
+            // Update the calendar event in Exchange
+            await eventToUpdate.UpdateAsync();
 
-                Debug.WriteLine("Updated event: " + eventToUpdate.Id);
-                return eventToUpdate;
+            Debug.WriteLine("Updated event: " + eventToUpdate.Id);
+            return eventToUpdate;
 
-                // A note about Batch Updating
-                // You can save multiple updates on the client and save them all at once (batch) by 
-                // implementing the following pattern:
-                // 1. Call UpdateAsync(true) for each event you want to update. Setting the parameter dontSave to true 
-                //    means that the updates are registered locally on the client, but won't be posted to the server.
-                // 2. Call exchangeClient.Context.SaveChangesAsync() to post all event updates you have saved locally  
-                //    using the preceding UpdateAsync(true) call to the server, i.e., the user's Office 365 calendar.
-            }
-            catch { return null; }
+            // A note about Batch Updating
+            // You can save multiple updates on the client and save them all at once (batch) by 
+            // implementing the following pattern:
+            // 1. Call UpdateAsync(true) for each event you want to update. Setting the parameter dontSave to true 
+            //    means that the updates are registered locally on the client, but won't be posted to the server.
+            // 2. Call exchangeClient.Context.SaveChangesAsync() to post all event updates you have saved locally  
+            //    using the preceding UpdateAsync(true) call to the server, i.e., the user's Office 365 calendar.
+
         }
 
         /// <summary>
@@ -340,7 +321,14 @@ namespace O365_Win_Snippets
                 Debug.WriteLine("Deleted event: " + eventToDelete.Id);
                 return eventToDelete;
             }
-            catch { return null; }
+            catch (ODataErrorException ex)
+            {
+                // GetById will throw an ODataErrorException when the 
+                // item with the specified Id can't be found in the contact store on the server. 
+                Debug.WriteLine(ex.Message);
+                return null;
+            }
+
         }
 
         //Helper method that creates a new DateTime for an updated meeting.
