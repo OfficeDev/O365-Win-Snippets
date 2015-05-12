@@ -81,6 +81,7 @@ namespace O365_Win_Snippets
             StoryCollection.Add(new StoryDefinition() { GroupName = "Email", Title = "Delete", RunStoryAsync = EmailStories.TryDeleteMessageAsync });
             StoryCollection.Add(new StoryDefinition() { GroupName = "Email", Title = "Move", RunStoryAsync = EmailStories.TryMoveMessageAsync });
             StoryCollection.Add(new StoryDefinition() { GroupName = "Email", Title = "Copy", RunStoryAsync = EmailStories.TryCopyMessageAsync });
+            StoryCollection.Add(new StoryDefinition() { GroupName = "Email", Title = "Add Attachment", RunStoryAsync = EmailStories.TryAddFileAttachmentAsync });
 
 
             StoryCollection.Add(new StoryDefinition() { GroupName = "Email folder", Title = "Read Folders", RunStoryAsync = EmailStories.TryGetMailFoldersAsync });

@@ -366,6 +366,25 @@ namespace O365_Win_Snippets
             return false;
         }
 
+        public static async Task<bool> TryAddFileAttachmentAsync()
+        {
+
+            var newMessageId = await EmailSnippets.CreateDraftAsync(
+                STORY_DATA_IDENTIFIER,
+                DEFAULT_MESSAGE_BODY,
+                AuthenticationHelper.LoggedInUserEmail
+            );
+
+            if (newMessageId == null)
+                return false;
+
+            await EmailSnippets.AddFileAttachmentAsync(newMessageId, new MemoryStream(Encoding.UTF8.GetBytes("TryAddMailAttachmentAsync")));
+
+
+            return true;
+
+        }
+
         public static async Task<bool> TryDeleteMailFolderAsync()
         {
 
