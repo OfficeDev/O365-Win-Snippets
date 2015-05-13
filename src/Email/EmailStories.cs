@@ -378,8 +378,12 @@ namespace O365_Win_Snippets
             if (newMessageId == null)
                 return false;
 
-            await EmailSnippets.AddFileAttachmentAsync(newMessageId, new MemoryStream(Encoding.UTF8.GetBytes("TryAddMailAttachmentAsync")));
+            // Pass a MemoryStream object for the sake of simplicity. 
 
+            using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes("TryAddMailAttachmentAsync")))
+            {
+                await EmailSnippets.AddFileAttachmentAsync(newMessageId, ms);
+            }
 
             return true;
 
