@@ -469,6 +469,36 @@ namespace O365_Win_Snippets
 
         }
 
+        public static async Task<bool> GetFileAttachmentsAsync(string MessageId)
+        {
+
+            try
+            {
+                // Make sure we have a reference to the Outlook Services client
+
+                OutlookServicesClient outlookClient = await GetOutlookClientAsync();
+
+                var message = outlookClient.Me.Messages.GetById(MessageId);
+                var attachmentsResult = await message.Attachments.ExecuteAsync();
+                var attachments = attachmentsResult.CurrentPage.ToList();
+
+                foreach (IFileAttachment attachment in attachments)
+                {
+                    Debug.WriteLine("Attachment: " + attachment.Name);
+                }
+
+                return true;
+            }
+            catch (ODataErrorException ex)
+            {
+                // GetById will throw an ODataErrorException when the 
+                // item with the specified Id can't be found in the contact store on the server. 
+                Debug.WriteLine(ex.Message);
+                return false;
+            }
+
+        }
+
         public static async Task<bool> DeleteMessageAsync(string MessageId)
         {
             try

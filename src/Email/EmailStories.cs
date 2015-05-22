@@ -244,6 +244,30 @@ namespace O365_Win_Snippets
 
         }
 
+        public static async Task<bool> TryGetFileAttachmentsAsync()
+        {
+
+            var newMessageId = await EmailSnippets.CreateDraftAsync(
+                STORY_DATA_IDENTIFIER,
+                DEFAULT_MESSAGE_BODY,
+                AuthenticationHelper.LoggedInUserEmail
+            );
+
+            if (newMessageId == null)
+                return false;
+
+            await EmailSnippets.AddFileAttachmentAsync(newMessageId, new MemoryStream(Encoding.UTF8.GetBytes("TryAddMailAttachmentAsync")));
+
+            // Find the sent message.
+            var sentMessageId = await GetSentMessageIdAsync();
+            if (String.IsNullOrEmpty(sentMessageId))
+                return false;
+
+            await EmailSnippets.GetFileAttachmentsAsync(sentMessageId);
+
+            return true;
+        }
+
         public static async Task<bool> TryDeleteMessageAsync()
         {
 
