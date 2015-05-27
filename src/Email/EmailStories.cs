@@ -268,6 +268,32 @@ namespace O365_Win_Snippets
             return true;
         }
 
+        public static async Task<bool> TryGetMessageWebLinkAsync()
+        {
+            // Create a draft message and send it.
+
+            var newMessageId = await EmailSnippets.CreateDraftAndSendAsync(
+                    STORY_DATA_IDENTIFIER,
+                    DEFAULT_MESSAGE_BODY,
+                    AuthenticationHelper.LoggedInUserEmail
+                );
+
+            if (newMessageId == null)
+                return false;
+            // Find the sent message.
+            var sentMessageId = await GetSentMessageIdAsync();
+            if (String.IsNullOrEmpty(sentMessageId))
+                return false;
+
+            var webLink = await EmailSnippets.GetMessageWebLinkAsync(sentMessageId);
+
+            if (String.IsNullOrEmpty(webLink))
+                return false;
+
+            return true;
+
+        }
+
         public static async Task<bool> TryDeleteMessageAsync()
         {
 

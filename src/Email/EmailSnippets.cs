@@ -499,6 +499,27 @@ namespace O365_Win_Snippets
 
         }
 
+        public static async Task<string> GetMessageWebLinkAsync(string MessageId)
+        {
+            try
+            {
+                // Make sure we have a reference to the Outlook Services client
+
+                OutlookServicesClient outlookClient = await GetOutlookClientAsync();
+                var message = await outlookClient.Me.Messages.GetById(MessageId).ExecuteAsync();
+                Debug.WriteLine("Web link for message " + message.Id + ": " + message.WebLink);
+
+                return message.WebLink;
+            }
+            catch (ODataErrorException ex)
+            {
+                // GetById will throw an ODataErrorException when the 
+                // item with the specified Id can't be found in the contact store on the server. 
+                Debug.WriteLine(ex.Message);
+                return null;
+            }
+        }
+
         public static async Task<bool> DeleteMessageAsync(string MessageId)
         {
             try
