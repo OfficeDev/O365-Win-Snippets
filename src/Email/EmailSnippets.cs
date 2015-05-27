@@ -10,7 +10,7 @@ using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Microsoft.OData.Core;
 using Microsoft.Office365.Discovery;
 using Microsoft.Office365.OutlookServices;
-using Microsoft.Office365.OutlookServices.Extensions;
+using Microsoft.OData.ProxyExtensions;
 
 
 namespace O365_Win_Snippets

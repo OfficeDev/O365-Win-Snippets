@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.Office365.OutlookServices;
-using Microsoft.Office365.OutlookServices.Extensions;
+using Microsoft.OData.ProxyExtensions;
 using Microsoft.OData.Client;
 using Microsoft.OData.Core;
 

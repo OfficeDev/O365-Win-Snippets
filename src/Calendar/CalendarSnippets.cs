@@ -4,7 +4,7 @@ using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Microsoft.OData.Core;
 using Microsoft.Office365.Discovery;
 using Microsoft.Office365.OutlookServices;
-using Microsoft.Office365.OutlookServices.Extensions;
+using Microsoft.OData.ProxyExtensions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
