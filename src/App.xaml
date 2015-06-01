@@ -5,7 +5,10 @@
     xmlns:local="using:O365_Win_Snippets">
     <Application.Resources>
         
+        <!-- Add a client id here -->
+
         <x:String x:Key="ida:AuthorizationUri">https://login.microsoftonline.com</x:String>
+
     </Application.Resources>
 
 </Application>
