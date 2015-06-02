@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.Office365.OutlookServices;
-using Microsoft.Office365.OutlookServices.Extensions;
+using Microsoft.OData.ProxyExtensions;
 using Microsoft.OData.Client;
 using Microsoft.OData.Core;
 
@@ -241,6 +241,56 @@ namespace O365_Win_Snippets
                             "Drafts");
 
             return isReplied;
+
+        }
+
+        public static async Task<bool> TryGetFileAttachmentsAsync()
+        {
+
+            var newMessageId = await EmailSnippets.CreateDraftAsync(
+                STORY_DATA_IDENTIFIER,
+                DEFAULT_MESSAGE_BODY,
+                AuthenticationHelper.LoggedInUserEmail
+            );
+
+            if (newMessageId == null)
+                return false;
+
+            await EmailSnippets.AddFileAttachmentAsync(newMessageId, new MemoryStream(Encoding.UTF8.GetBytes("TryAddMailAttachmentAsync")));
+
+            // Find the sent message.
+            var sentMessageId = await GetSentMessageIdAsync();
+            if (String.IsNullOrEmpty(sentMessageId))
+                return false;
+
+            await EmailSnippets.GetFileAttachmentsAsync(sentMessageId);
+
+            return true;
+        }
+
+        public static async Task<bool> TryGetMessageWebLinkAsync()
+        {
+            // Create a draft message and send it.
+
+            var newMessageId = await EmailSnippets.CreateDraftAndSendAsync(
+                    STORY_DATA_IDENTIFIER,
+                    DEFAULT_MESSAGE_BODY,
+                    AuthenticationHelper.LoggedInUserEmail
+                );
+
+            if (newMessageId == null)
+                return false;
+            // Find the sent message.
+            var sentMessageId = await GetSentMessageIdAsync();
+            if (String.IsNullOrEmpty(sentMessageId))
+                return false;
+
+            var webLink = await EmailSnippets.GetMessageWebLinkAsync(sentMessageId);
+
+            if (String.IsNullOrEmpty(webLink))
+                return false;
+
+            return true;
 
         }
 

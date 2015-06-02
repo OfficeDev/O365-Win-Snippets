@@ -10,7 +10,7 @@ using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Microsoft.OData.Core;
 using Microsoft.Office365.Discovery;
 using Microsoft.Office365.OutlookServices;
-using Microsoft.Office365.OutlookServices.Extensions;
+using Microsoft.OData.ProxyExtensions;
 
 
 namespace O365_Win_Snippets
@@ -467,6 +467,57 @@ namespace O365_Win_Snippets
                 return false;
             }
 
+        }
+
+        public static async Task<bool> GetFileAttachmentsAsync(string MessageId)
+        {
+
+            try
+            {
+                // Make sure we have a reference to the Outlook Services client
+
+                OutlookServicesClient outlookClient = await GetOutlookClientAsync();
+
+                var message = outlookClient.Me.Messages.GetById(MessageId);
+                var attachmentsResult = await message.Attachments.ExecuteAsync();
+                var attachments = attachmentsResult.CurrentPage.ToList();
+
+                foreach (IFileAttachment attachment in attachments)
+                {
+                    Debug.WriteLine("Attachment: " + attachment.Name);
+                }
+
+                return true;
+            }
+            catch (ODataErrorException ex)
+            {
+                // GetById will throw an ODataErrorException when the 
+                // item with the specified Id can't be found in the contact store on the server. 
+                Debug.WriteLine(ex.Message);
+                return false;
+            }
+
+        }
+
+        public static async Task<string> GetMessageWebLinkAsync(string MessageId)
+        {
+            try
+            {
+                // Make sure we have a reference to the Outlook Services client
+
+                OutlookServicesClient outlookClient = await GetOutlookClientAsync();
+                var message = await outlookClient.Me.Messages.GetById(MessageId).ExecuteAsync();
+                Debug.WriteLine("Web link for message " + message.Id + ": " + message.WebLink);
+
+                return message.WebLink;
+            }
+            catch (ODataErrorException ex)
+            {
+                // GetById will throw an ODataErrorException when the 
+                // item with the specified Id can't be found in the contact store on the server. 
+                Debug.WriteLine(ex.Message);
+                return null;
+            }
         }
 
         public static async Task<bool> DeleteMessageAsync(string MessageId)
