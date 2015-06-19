@@ -137,12 +137,16 @@ Now you can test your snippet. When you run the app, your snippet will appear as
 ## Next steps ##
 
 - If you're interested in a sample that has a richer interface for interacting with the Office 365 services in a Windows app, look at the [Office 365 Starter Project for Windows Store App](https://github.com/OfficeDev/O365-Windows-Start).
-- For more details on what else you can do with the Office 365 services in your Windows app, start with the [Getting started](http://aka.ms/rpx192) page on dev.office.com.
+- For more details on what else you can do with the Office 365 services in your Windows app, start with the [Getting started](http://dev.office.com/getting-started) page on dev.office.com.
 
 <a name="additional-resources"></a>
 ## Additional resources ##
 
-- [Office 365 APIs documentation](http://aka.ms/kbwa5c)
-- [Office 365 APIs starter projects and code samples](http://aka.ms/x1kpnz)
-- [Office developer code samples](http://aka.ms/afh45z)
-- [Office dev center](http://aka.ms/uftrm1)
+- [Office 365 APIs platform overview](https://msdn.microsoft.com/office/office365/howto/platform-development-overview)
+- [Office 365 API code samples and videos](https://msdn.microsoft.com/office/office365/howto/starter-projects-and-code-samples)
+- [Office developer code samples](http://dev.office.com/code-samples)
+- [Office dev center](http://dev.office.com/)
+- [Connecting to Office 365 in Windows Store, Phone, and universal apps](https://github.com/OfficeDev/O365-Win-Connect)
+- [Office 365 Starter Project for Windows Store App](https://github.com/OfficeDev/O365-Windows-Start)
+- [Office 365 Profile sample for Windows](https://github.com/OfficeDev/O365-Win-Profile)
+- [Office 365 REST API Explorer for Sites](https://github.com/OfficeDev/Office-365-REST-API-Explorer)
