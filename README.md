@@ -127,11 +127,11 @@ Now you can test your snippet. When you run the app, your snippet will appear as
 - You run the Windows App Certification Kit against the installed app, and the app fails the supported APIs test. This likely happened because the Visual Studio tools installed older versions of some assemblies. Check the entries for Microsoft.Azure.ActiveDirectory.GraphClient and the Microsoft.OData assemblies in your project's packages.config file. Make sure that the version numbers for those assemblies match the version numbers in [this repo's version of packages.config](https://github.com/OfficeDev/O365-Win-Snippets/blob/master/src/packages.config). When you rebuild and reinstall the solution with the updated assemblies, the app should pass the supported APIs test.
 
 <a name="questions"></a>
-##Questions and comments##
+## Questions and comments
 
-- If you have any trouble running this sample, please [log an issue](https://github.com/OfficeDev/O365-Win-Snippets/issues).
-- For more general feedback, send and email to [docthis@microsoft.com](mailto:docthis@microsoft.com?subject=Feedback%20on%20the%20Office%20365%20Windows%20snippet%20app).
+We'd love to get your feedback on the O365 Windows Snippets project. You can send your questions and suggestions to us in the [Issues](https://github.com/OfficeDev/O365-Win-Snippets/issues) section of this repository.
 
+Questions about Office 365 development in general should be posted to [Stack Overflow](http://stackoverflow.com/questions/tagged/Office365+API). Make sure that your questions or comments are tagged with [Office365] and [API].
 
 <a name="next-steps"></a>
 ## Next steps ##
