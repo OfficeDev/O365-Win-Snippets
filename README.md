@@ -6,6 +6,7 @@
 * [Prerequisites](#prerequisites)
 * [Register and configure the app](#register)
 * [Build and debug](#build)
+* [How the sample affects your tenant data](#how-the-sample-affects-your-tenant-data)
 * [Add a snippet](#add-a-snippet)
 * [Troubleshooting](#troubleshooting)
 * [Questions and comments](#questions)
@@ -69,6 +70,10 @@ After you click **OK** in the Services Manager dialog box, you can select **Buil
 
 After you've loaded the solution in Visual Studio, press F5 to build and debug.
 Run the solution and sign in with your organizational account to Office 365.
+
+<a name="#how-the-sample-affects-your-tenant-data"></a>
+##How the sample affects your tenant data
+This sample runs REST commands that create, read, update, or delete data. When running commands that delete or edit data, the sample creates fake entities. The fake entities are deleted or edited so that your actual tenant data is unaffected. The sample will leave behind fake entities on your tenant.
 
 <a name="add-a-snippet"></a>
 ##Add a snippet
