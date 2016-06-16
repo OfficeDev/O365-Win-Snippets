@@ -22,7 +22,7 @@ These snippets are simple and self-contained, and you can copy and paste them in
 
 The image below shows what you'll see when you launch the app.
 
-![](/Readme-images/MainPage.png "Launch page of O365 Window snippet app")
+![Application main page](/Readme-images/MainPage.png "Launch page of O365 Window snippet app")
 
 You can choose to run all of the snippets, or just the ones you select. After you choose to run, you’ll be prompted to authenticate with your Office 365 account credentials, and the snippets will run.
 
@@ -60,7 +60,7 @@ You can register the app with the Office 365 API Tools for Visual Studio. Be sur
 	
 
 The dialog will look like this:
-![](/Readme-images/ConnectedServices.PNG "Windows Store connected services")
+![O365 app registration page](/Readme-images/ConnectedServices.PNG "Windows Store connected services")
 
 After you click **OK** in the Services Manager dialog box, you can select **Build Solution** from the **Build menu** to load the Microsoft.IdentityModel.Clients.ActiveDirectory assembly, or you can wait until you debug.
 
