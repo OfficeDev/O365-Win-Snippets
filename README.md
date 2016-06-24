@@ -60,7 +60,7 @@ You can register the app with the Office 365 API Tools for Visual Studio. Be sur
 	
 
 The dialog will look like this:
-![O365 app registration page](/Readme-images/ConnectedServices.PNG "Windows Store connected services")
+![Office 365 app registration page](/Readme-images/ConnectedServices.PNG "Office 365 app registration page")
 
 After you click **OK** in the Services Manager dialog box, you can select **Build Solution** from the **Build menu** to load the Microsoft.IdentityModel.Clients.ActiveDirectory assembly, or you can wait until you debug.
 
