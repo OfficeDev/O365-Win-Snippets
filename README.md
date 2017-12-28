@@ -155,3 +155,6 @@ Questions about Office 365 development in general should be posted to [Stack Ove
 - [Office 365 Starter Project for Windows Store App](https://github.com/OfficeDev/O365-Windows-Start)
 - [Office 365 Profile sample for Windows](https://github.com/OfficeDev/O365-Win-Profile)
 - [Office 365 REST API Explorer for Sites](https://github.com/OfficeDev/Office-365-REST-API-Explorer)
+
+
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information, see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
